@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<link rel="icon" type="image/png" href="https://i.ibb.co/HfCP0gZR/Chat-GPT-Image-Nov-3-2026-05-58-47-AM.png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Đóng container · CBM → DO / PKL / INV</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#202b29;background:#f4f6f5;font-size:14px;accent-color:#176b53}*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{border:1px solid #cbd5d1;border-radius:6px;background:white;padding:9px 14px;cursor:pointer;color:inherit}button:hover:not(:disabled){background:#edf4f0}button:disabled{opacity:.45;cursor:not-allowed}button.primary{background:#176b53;color:white;border-color:#176b53}button.primary:hover:not(:disabled){background:#11513f}button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid #2b9878;outline-offset:3px}header{background:white;border-bottom:1px solid #dce3df;padding:22px 30px;display:flex;align-items:center;justify-content:space-between;gap:20px}h1{font-size:23px;margin:0 0 5px;letter-spacing:-.6px}p{margin:0;color:#63716b;line-height:1.6}.privacy{font-size:12px;color:#176b53;background:#edf5f0;padding:8px 12px;border-radius:5px;white-space:nowrap}main{padding:24px 30px;max-width:1800px;margin:auto}.import{display:flex;align-items:center;gap:14px;margin-bottom:16px;flex-wrap:wrap}.import small{font-size:12.5px;color:#556660;background:#ffffff;padding:7px 15px;border-radius:20px;border:1px solid #dce3df;box-shadow:0 1px 3px rgba(0,0,0,0.03);overflow-wrap:anywhere}.upload{position:relative;display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#0d4536 0%,#166a52 52%,#1e8467 100%);color:#ffffff;padding:10px 22px;font-size:13.5px;font-weight:600;letter-spacing:.25px;border-radius:9px;border:1px solid rgba(255,255,255,.2);box-shadow:0 4px 15px -1px rgba(18,78,63,.4),0 1px 3px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.3);cursor:pointer;transition:all .25s cubic-bezier(.16,1,.3,1);user-select:none;overflow:hidden}.upload::before{content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.22) 50%,transparent 70%);transform:translateX(-100%);transition:transform .65s cubic-bezier(.2,.8,.2,1);pointer-events:none}.upload:hover{background:linear-gradient(135deg,#0a3a2d 0%,#135d48 52%,#1b7a5e 100%);transform:translateY(-2px);box-shadow:0 8px 24px -2px rgba(18,78,63,.48),0 3px 8px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.38)}.upload:hover::before{transform:translateX(100%)}.upload:active{transform:translateY(0);box-shadow:0 3px 10px rgba(18,78,63,.35),inset 0 1px 2px rgba(0,0,0,.2)}.upload .upload-icon{width:17px;height:17px;flex-shrink:0;stroke:currentColor;filter:drop-shadow(0 1px 1px rgba(0,0,0,.2));transition:transform .25s ease}.upload:hover .upload-icon{transform:translateY(-2px)}.upload:focus-within{outline:3px solid #2b9878;outline-offset:3px}.upload input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}.upload:has(input:disabled){opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}.tabs{display:flex;gap:6px;margin-bottom:8px}.tabs button{padding:6px 12px;font-size:13px}.tabs button[aria-pressed=true]{background:#176b53;color:white;border-color:#176b53}#sheetView table{width:auto;min-width:100%}#sheetView th{background:#eef1ef;height:auto;font-weight:500;color:#748079;font-size:11px;padding:4px 8px}#sheetView td{padding:4px 8px;font-size:12px;text-align:left;white-space:pre-wrap;min-width:40px}#sheetView td.formula{background:#eef6ff}#sheetView td.formula small{display:block;font-size:10px;color:#3d6a9e;font-family:ui-monospace,Consolas,monospace}.drop{border:1px dashed #9eafa7;background:white;border-radius:8px;padding:22px;display:flex;flex-direction:column;align-items:flex-start;gap:10px;min-width:0}.drop h2{font-size:17px}.drop input{width:100%;max-width:100%;border:1px solid #dce3df;border-radius:6px;padding:8px;background:#f8faf9;font-size:13px}.drop input::file-selector-button{font:inherit;border:0;border-radius:4px;padding:7px 10px;margin-right:10px;background:#e5eee9;color:#17533f;cursor:pointer}.drop small{color:#63716b;overflow-wrap:anywhere}.section-title,.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}h2{font-size:15px;margin:0}.count{font-size:12px;color:#63716b}.header-panel{background:white;border:1px solid #dce3df;border-radius:8px;padding:20px;margin-bottom:22px}.section-title{margin-bottom:16px}.fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}label.field{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:600}.field input,.field select{min-width:0;width:100%;padding:9px 10px;border:1px solid #cbd5d1;border-radius:5px;background:white;color:#202b29}.field input:disabled{background:#f4f6f5;color:#748079}.field.wide{grid-column:span 2}.field small{font-size:11px;font-weight:400;color:#748079}.toolbar{margin:16px 0 12px}.actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.summary{display:flex;gap:20px;flex-wrap:wrap;color:#63716b;font-size:13px}.summary b{color:#202b29;font-size:16px}.hint{font-size:12px;margin:9px 0}.table-wrap{overflow:auto;max-height:58vh;background:white;border:1px solid #cbd5d1;border-radius:6px;min-height:210px}table{border-collapse:separate;border-spacing:0;width:100%;font-size:13px}th{background:#ffff00;position:sticky;top:0;z-index:2;height:46px;white-space:nowrap}th,td{border-right:1px solid #d4d9d6;border-bottom:1px solid #d4d9d6;padding:10px;text-align:center;vertical-align:middle;white-space:pre-wrap;overflow-wrap:anywhere}td.name{text-align:left;min-width:360px;width:45%}td.code{min-width:150px}td.num{min-width:75px;font-variant-numeric:tabular-nums}tr.aux td{background:#f0f6f3}.badge{font-size:10px;padding:3px 6px;display:inline-block;border-radius:4px;background:#dfece5;color:#31624d;white-space:nowrap;margin-bottom:5px}.group td{background:#e7eee9;text-align:left;font-weight:600;padding:8px 12px}.total td{background:#fafbea;font-weight:700}#empty{text-align:center;padding:55px 20px}#empty strong{display:block;margin-bottom:8px}.message{padding:11px 14px;border-radius:5px;margin:10px 0;line-height:1.5}.error{background:#fff0ee;color:#9a2828;border:1px solid #f0d1ca}.notice{background:#fff8df;color:#725716;border:1px solid #e7dbb0}#status{font-size:13px;color:#176b53;min-height:23px;margin-bottom:8px}footer{font-size:12px;color:#748079;display:flex;justify-content:space-between;gap:12px;margin-top:12px}#toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#203c31;color:white;padding:12px 20px;border-radius:7px;z-index:20;box-shadow:0 5px 20px #142a2426}[hidden]{display:none!important}@media(max-width:1000px){.fields{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){header{padding:20px;align-items:flex-start;flex-direction:column}main{padding:18px}.import{grid-template-columns:1fr;gap:14px}h1{font-size:21px}.privacy{white-space:normal}.fields{grid-template-columns:1fr}.field.wide{grid-column:auto}footer{flex-direction:column}.header-panel{padding:16px}}
+.brand{display:flex;align-items:center;gap:14px;min-width:0}.brand-logo{display:block;width:64px;height:64px;object-fit:contain;flex-shrink:0}@media(max-width:700px){.brand-logo{width:48px;height:48px}.brand{gap:10px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><img class="brand-logo" src="https://i.ibb.co/HfCP0gZR/Chat-GPT-Image-Nov-3-2026-05-58-47-AM.png" alt="Logo Đóng container" width="64" height="64" referrerpolicy="no-referrer"><div><h1>Đóng container</h1><p>Từ bảng CBM đến bộ chứng từ DO · PKL · INV.</p></div></div><span class="privacy">Xử lý trên máy · Không tải file lên máy chủ</span></header>
+<main>
+<section class="import" aria-label="Chọn file CBM">
+ <label class="upload" for="cbmFile"><svg class="upload-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 13.5v2a1.5 1.5 0 0 0 1.5 1.5h10a1.5 1.5 0 0 0 1.5-1.5v-2"/><path d="M10 3.5v9"/><path d="m6 7.5 4-4 4 4"/></svg><span>Chọn file CBM</span><input id="cbmFile" type="file" accept=".xlsx"></label><small id="cbmInfo">Chưa chọn file · .xlsx</small>
+</section>
+<div id="cbmError" class="message error" role="alert" hidden></div>
+<div id="libraryError" class="message error" role="alert" hidden></div>
+<section class="header-panel" aria-labelledby="headerTitle">
+ <div class="section-title"><h2 id="headerTitle">Thông tin chứng từ</h2><div class="actions"><span id="headerOrigin" class="count">Chọn template để điền thông tin.</span><button id="resetHeader" disabled>Lấy lại từ template</button></div></div>
+ <form id="headerForm" class="fields" autocomplete="off"></form>
+ <p class="hint">Thông tin sửa được lưu trên trình duyệt cho lần dùng sau. “Lấy lại từ template” khôi phục dữ liệu của mẫu đang chọn.</p>
+ <div id="storageNotice" class="message notice" role="status" hidden></div>
+</section>
+<div id="status" role="status">Đang nạp template. Chọn file CBM để bắt đầu.</div>
+<section aria-labelledby="previewTitle">
+ <div class="toolbar"><div><h2 id="previewTitle">Xem trước hàng đóng container</h2><p id="previewInfo" class="hint">Chưa có dữ liệu.</p></div><button id="exportButton" class="primary" disabled>Xuất Excel</button></div>
+ <div id="summary" class="summary"><span>Tổng QTY <b id="qtyTotal">—</b></span><span>Tổng PKGS <b id="pkgsTotal">—</b></span><span id="groupCount"></span></div>
+ <p class="hint">Dòng “Thùng phụ” được gộp với hàng chính trong DO/PKL, không tạo dòng riêng trong INV.</p>
+ <div id="exportError" class="message error" role="alert" hidden></div>
+ <div class="tabs" role="group" aria-label="Chế độ xem"><button id="modeCbm" aria-pressed="true">Dữ liệu CBM</button><button id="modeFile" aria-pressed="false" disabled>Xem trước file xuất</button></div>
+ <div id="fileView" hidden><div id="sheetTabs" class="tabs" role="group" aria-label="Sheet"></div><div id="sheetView" class="table-wrap" tabindex="0" aria-label="Xem trước sheet"></div></div>
+ <div id="cbmView" class="table-wrap" tabindex="0" aria-label="Bảng xem trước CBM"><table><thead><tr><th scope="col">PO</th><th scope="col">ARTICLE NAME</th><th scope="col">CODE</th><th scope="col">QTY</th><th scope="col">PKGS</th><th scope="col">L</th><th scope="col">W</th><th scope="col">H</th></tr></thead><tbody id="previewBody"></tbody></table><div id="empty"><strong>Chưa có hàng để hiển thị</strong><p>Chọn file CBM để xem danh sách và tổng số lượng.</p></div></div>
+ <footer><span id="exportName">Tên file xuất theo Booking và tên cont trong file CBM.</span><span>Đơn giá, KG, UNIT, HSCODE, Remark và mô tả tiếng Việt để trống.</span></footer>
+</section>
+</main>
+<div id="toast" role="status" hidden></div>
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+<script id="embedded-template">
+// BEGIN EMBEDDED TEMPLATE — generated by scratchpad/embed-template.mjs
+const TEMPLATE_NAME = "DO - PKL - INV - BKG EBKG19059798 - CONT 6.xlsx";
+const TEMPLATE_B64 = "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";
+// END EMBEDDED TEMPLATE
+</script>
+<script id="core">
+'use strict';
+// Pure processing layer: no DOM, storage, network or mutation of the input workbook.
+const HEADER_FIELDS = [
+ {key:'invoiceNo',label:'Invoice No',do:'M6',pkl:'L6',inv:'F8'},
+ {key:'date',label:'Date',do:'M7',pkl:'L7',inv:'F9',type:'date'},
+ {key:'doNo',label:'DO No',do:'M8',pkl:'L8',inv:'F10'},
+ {key:'doDate',label:'DO date',do:'M9',pkl:'L9',inv:'F11',type:'date'},
+ {key:'etd',label:'ETD',do:'D10',pkl:'D10',inv:'A17',prefix:true},
+ {key:'etaLgb',label:'ETA LGB',do:'D11',pkl:'D11',inv:'A18',prefix:true},
+ {key:'etaMem',label:'ETA MEM',do:'D12',pkl:'D12',inv:'A19',prefix:true},
+ {key:'etaLawMs',label:'ETA LAW MS',do:'D13',pkl:'D13',inv:'A20',prefix:true},
+ {key:'booking',label:'Booking',do:'A11',pkl:'A11',inv:'A14',prefix:true},
+ {key:'contSeal',label:'Cont/Seal',do:'A12',pkl:'A12',inv:'A15',prefix:true},
+ {key:'vessel',label:'Vessel',do:'A13',pkl:'A13',inv:'A16',prefix:true,wide:true},
+ {key:'shipTo',label:'Ship to',do:'A6',pkl:'A6',inv:'A9',prefix:true,wide:true},
+ {key:'contract',label:'Contract',do:'A8',pkl:'A8',inv:'A11',prefix:true,wide:true}
+];
+const SHEET_CONFIG={DO:{start:17,lastCol:16},PKL:{start:17,lastCol:14},INV:{start:24,lastCol:7}};
+function exportFilename(booking,cbmName){
+ const clean=value=>String(value??'').trim().replace(/[<>:"/\\|?*\u0000-\u001f]/g,'_').replace(/[. ]+$/g,'');
+ const bookingPart=clean(booking),contPart=clean(String(cbmName??'').replace(/\.xlsx$/i,'').split(' - ')[0]);
+ if(!bookingPart)throw new Error('Hãy nhập Booking trước khi xuất Excel.');
+ if(!contPart)throw new Error('Không xác định được tên cont từ tên file CBM.');
+ return `DO - PKL - INV - BKG ${bookingPart} - ${contPart}.xlsx`;
+}
+function norm(value){return String(value??'').normalize('NFC').trim().replace(/\s+/g,' ');}
+function blank(value){return value===null||value===undefined||(typeof value==='string'&&value.trim()==='');}
+function clone(value){
+ if(value===null||typeof value!=='object')return value;
+ if(value instanceof Date)return new Date(value.getTime());
+ if(ArrayBuffer.isView(value))return value.slice();
+ if(value instanceof ArrayBuffer)return value.slice(0);
+ if(Array.isArray(value))return value.map(clone);
+ return Object.fromEntries(Object.entries(value).map(([key,item])=>[key,clone(item)]));
+}
+function cloneWorkbook(wb){
+ const model=clone(wb.model);
+ // The ExcelJS worksheet model reader uses mergeCells, while its writer exposes merges.
+ for(const sheet of model.worksheets)sheet.mergeCells=clone(sheet.merges||[]);
+ const copy=new wb.constructor();copy.model=model;
+ for(const sheet of wb.model.worksheets)for(const row of sheet.rows)for(const cell of row.cells)copy.getWorksheet(sheet.name).getCell(cell.address).style=clone(cell.style||{});
+ return copy;
+}
+function cellValue(cell,cbm=false){
+ let value=cell?.value;
+ if(value&&typeof value==='object'&&('formula' in value||'sharedFormula' in value)){
+  // ExcelJS 4.4 omits a zero cached result from .value for shared formulas.
+  // .result retains that actual cache; never substitute a fabricated zero.
+  const cached=value.result??cell.result;
+  if(cached===undefined||cached===null)throw new Error(cbm?`Hãy mở file CBM bằng Excel, lưu lại rồi thử lại (ô ${cell.address}).`:`Ô ${cell.worksheet.name}!${cell.address} có công thức chưa có kết quả. Hãy mở template bằng Excel và lưu lại.`);
+  value=cached;
+ }
+ if(value&&typeof value==='object'&&value.richText)return value.richText.map(part=>part.text).join('');
+ if(value&&typeof value==='object'&&value.error)throw new Error(`Ô ${cell.address} có lỗi Excel: ${value.error}.`);
+ if(value&&typeof value==='object'&&'text' in value)return value.text;
+ return value;
+}
+function numeric(value,addr){
+ if(blank(value))return null;
+ if(typeof value==='number'&&Number.isFinite(value))return value;
+ const text=String(value).trim();
+ if(/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(text)&&Number.isFinite(Number(text)))return Number(text);
+ throw new Error(`Ô ${addr} phải là số hoặc để trống; đang có “${text}”.`);
+}
+function cleanCode(value){
+ // "S4606A100XA072 (GR-400-CG)" -> "S4606A100XA072"; a code that is only "(GR-…)" stays as is.
+ const code=String(value??'').trim(),m=code.match(/^([^(\s][^(]*?)\s*\(/);return m?m[1]:code;
+}
+function parseCbm(wb,opts={}){
+ const sheets=wb.worksheets.filter(s=>!s.state||s.state==='visible').map(s=>s.name);
+ const ws=opts.sheet?wb.getWorksheet(opts.sheet):wb.getWorksheet(sheets[0]);if(!ws)throw new Error('File CBM không có sheet.');
+ const read=addr=>{const [,col,row]=addr.match(/^([A-Z]+)(\d+)$/);return cellValue(ws.findRow(+row)?.findCell(colNumber(col)),true);};
+ // Resolve input columns from headers, allowing inserted/reordered columns and title rows.
+ const headerKey=value=>norm(value).toUpperCase().replace(/[._]/g,' ').replace(/\s+/g,' ').trim();
+ const aliases={name:['DESCRIPTION','ARTICLE NAME','ITEM DESCRIPTION'],code:['CODE','ITEM CODE'],L:['L','LENGTH'],W:['W','WIDTH'],H:['H','HEIGHT'],sets:['SETS','SET','QTY','QUANTITY'],carton:['CARTON','CARTONS','PKGS','PACKAGES']};
+ const labelText=cell=>{const value=cell?.value;return typeof value==='string'?value:value?.richText?value.richText.map(p=>p.text).join(''):'';};
+ const headers=new Map(),intro=[];let labelRow=null,totalCol=null;
+ const rowCells=r=>{const cells=[];ws.findRow(r)?.eachCell(cell=>{if(!cell.isMerged||cell.master.address===cell.address)cells.push(cell);});return cells;};
+ ws.eachRow(row=>{
+  if(labelRow)return;
+  const cells=rowCells(row.number);
+  for(const cell of cells){
+   const key=headerKey(labelText(cell));
+   if(key==='TOTAL'&&headers.get(cell.col)?.role==='sets'){labelRow=row.number;totalCol=cell.col;break;}
+  }
+  if(labelRow)return;
+  intro.push(...cells.map(cell=>({row:row.number,text:norm(labelText(cell))})));
+  for(const cell of cells){
+   const key=headerKey(labelText(cell));
+   const role=Object.keys(aliases).find(role=>aliases[role].includes(key));
+   if(role)headers.set(cell.col,{role,row:row.number});
+  }
+ });
+ if(!labelRow)throw new Error(`Sheet ${ws.name}: không tìm thấy tiêu đề “TOTAL” với cột Sets/QTY.`);
+ const columns={};
+ for(const role of ['name','code','L','W','H']){
+  const matches=[...headers].filter(([,h])=>h.role===role);
+  if(matches.length!==1)throw new Error(`Sheet ${ws.name}: ${matches.length?'có nhiều':'thiếu'} tiêu đề ${aliases[role][0]}; không xác định được cột dữ liệu.`);
+  columns[role]=colName(matches[0][0]);
+ }
+ const conts=[],quantityHeaders=[...headers].filter(([,h])=>h.role==='sets'||h.role==='carton').sort((a,b)=>a[0]-b[0]);
+ for(let i=0;i<quantityHeaders.length;i++){
+  const [c,h]=quantityHeaders[i];if(h.role!=='sets')continue;
+  const label=String(cellValue(ws.findRow(labelRow)?.findCell(c),true)??'').trim();if(!label)continue;
+  const next=quantityHeaders[i+1];
+  if(!next||next[1].role!=='carton')throw new Error(`Sheet ${ws.name}: thiếu cột Carton/PKGS cho “${label}”.`);
+  const [name,second='']=label.split(/\r?\n/).map(s=>s.trim());
+  let booking='';
+  for(let r=labelRow-1;r>h.row;r--){const text=norm(cellValue(ws.findRow(r)?.findCell(c),true));if(text){booking=text;break;}}
+  booking=booking||(/^\d{6,}$/.test(second)?second:'');
+  conts.push({name,sets:colName(c),carton:colName(next[0]),booking,seal:second.includes('/')?second:''});
+ }
+ const totalIndex=conts.findIndex(c=>c.sets===colName(totalCol));
+ if(totalIndex<0)throw new Error(`Sheet ${ws.name}: thiếu cặp Sets/Carton của TOTAL.`);
+ // TOTAL remains the default even if container columns are reordered.
+ conts.unshift(...conts.splice(totalIndex,1));
+ const contIndex=Math.min(Math.max(+opts.cont||0,0),conts.length-1),cont=conts[contIndex],isTotal=contIndex===0;
+ const title=intro.find(item=>/\bCBM\s+PO\s*#/i.test(item.text))?.text||intro.find(item=>/^(?:SO|PO)\s*#/i.test(item.text))?.text||'';
+ const titleGroups=title.split('+').map(part=>(part.match(/\b\d{5}\b/g)||[])).filter(group=>group.length);
+ const grouped=title.includes('+');
+ const groups=grouped?titleGroups.map(pos=>({pos:[...new Set(pos)]})): [{pos:[...new Set(titleGroups.flat())]}];
+ const poGroup=new Map();groups.forEach((group,index)=>group.pos.forEach(po=>{if(!poGroup.has(po))poGroup.set(po,index);}));
+ let currentPo=null;
+ const poHeading=r=>rowCells(r).map(cell=>norm(labelText(cell))).find(text=>/^(?:SO|PO)\s*#/i.test(text));
+ for(let r=1;r<=labelRow;r++){const text=poHeading(r);if(text)currentPo=text.match(/\d+/)?.[0]??null;}
+ if(!currentPo)currentPo=titleGroups[0]?.[0]||(/^\d{5}$/.test(ws.name)?ws.name:null);
+ const rows=[];let totalRow=null,lastMain=null;
+ for(let r=labelRow+1;r<=ws.rowCount;r++){
+  if(rowCells(r).some(cell=>/^(?:FINAL\s+)?TOTAL\b/i.test(norm(labelText(cell))))){totalRow=r;break;}
+  const heading=poHeading(r);
+  if(heading){currentPo=heading.match(/\d+/)?.[0]??null;lastMain=null;if(!currentPo)throw new Error(`Không đọc được PO tại dòng ${r}.`);continue;}
+  const rawName=read(`${columns.name}${r}`);
+  // A second box can have no name, only its dimensions.
+  if(blank(rawName)&&blank(read(`${columns.code}${r}`))&&blank(read(`${columns.L}${r}`)))continue;
+  const name=String(rawName??'');
+  if(!currentPo)throw new Error(`Không xác định được PO cho dòng ${r}.`);
+  if(!poGroup.has(currentPo)){
+   const index=grouped?groups.length:0;
+   if(grouped)groups.push({pos:[currentPo]});else groups[0].pos.push(currentPo);
+   poGroup.set(currentPo,index);
+  }
+  const code=cleanCode(read(`${columns.code}${r}`));
+  // Second box: no code, and no name or a "BOX 2/2 …" name, under a main item of the same PO.
+  const auxiliary=code===''&&(name.trim()===''||/^BOX\b/i.test(name.trim()))&&!!lastMain&&lastMain.po===currentPo;
+  const sets=numeric(read(`${cont.sets}${r}`),`${cont.sets}${r}`),cartons=numeric(read(`${cont.carton}${r}`),`${cont.carton}${r}`);
+  const row={po:currentPo,name,code,qty:auxiliary?null:sets,pkgs:auxiliary?(cartons??lastMain.pkgs):cartons,L:numeric(read(`${columns.L}${r}`),`${columns.L}${r}`),W:numeric(read(`${columns.W}${r}`),`${columns.W}${r}`)};
+  row.H=numeric(read(`${columns.H}${r}`),`${columns.H}${r}`);
+  row.auxiliary=auxiliary;row.sourceRow=r;row.group=poGroup.get(currentPo);row.id=`cbm-${r}`;row.parentId=auxiliary?lastMain.id:null;
+  // A cont column keeps only items packed in it; TOTAL keeps everything, zeros included.
+  row.keep=auxiliary?lastMain.keep:isTotal||(sets??0)>0||(cartons??0)>0;
+  rows.push(row);if(!auxiliary)lastMain=row;
+ }
+ if(totalRow===null)throw new Error('Không tìm thấy dòng TOTAL kết thúc bảng trong file CBM.');
+ const kept=rows.filter(r=>r.keep).map(({keep,...r})=>r);
+ if(!kept.length)throw new Error(`Không có hàng nào trong cột ${cont.name} của sheet ${ws.name}.`);
+ const totals={qty:kept.reduce((s,r)=>s+(r.qty??0),0),pkgs:kept.reduce((s,r)=>s+(r.pkgs??0),0)};
+ return {rows:kept,groups:groups.map((g,index)=>({...g,index})).filter(g=>kept.some(r=>r.group===g.index)),totals,title,sheetName:ws.name,sheets,conts,contIndex,totalRow};
+}
+function findRegion(ws,config){
+ let total=null,final=null;
+ for(let r=config.start;r<=ws.rowCount;r++){
+  const label=norm(cellValue(ws.findRow(r)?.findCell(1))).toUpperCase();
+  if(label==='TOTAL'&&total===null)total=r;
+  if(label==='FINAL TOTAL'){final=r;break;}
+ }
+ if(total===null)throw new Error(`Không tìm thấy dòng TOTAL trong sheet ${ws.name}.`);
+ if(ws.name!=='INV'&&final===null)throw new Error(`Không tìm thấy dòng FINAL TOTAL trong sheet ${ws.name}.`);
+ return {...config,total,end:ws.name==='INV'?total:final};
+}
+function validateTemplate(wb){
+ const missing=Object.keys(SHEET_CONFIG).filter(name=>!wb.getWorksheet(name));
+ if(missing.length)throw new Error(`Template thiếu sheet: ${missing.join(', ')}.`);
+ return Object.fromEntries(Object.entries(SHEET_CONFIG).map(([name,config])=>[name,findRegion(wb.getWorksheet(name),config)]));
+}
+function prefixParts(value){const text=String(value??''),match=text.match(/^([^:]*:\s*)([\s\S]*)$/);return match?{prefix:match[1],value:match[2]}:{prefix:'',value:text};}
+function dateInput(value){
+ if(blank(value))return '';
+ if(value instanceof Date&&!Number.isNaN(+value))return `${value.getUTCFullYear()}-${String(value.getUTCMonth()+1).padStart(2,'0')}-${String(value.getUTCDate()).padStart(2,'0')}`;
+ const text=norm(value);let m=text.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+ if(m)return text;m=text.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+ if(m)return `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;
+ throw new Error(`Ngày trong template không hợp lệ: ${text}.`);
+}
+function excelDate(value,label){
+ const text=value instanceof Date?dateInput(value):String(value??'');if(text==='')return null;
+ const match=text.match(/^(\d{4})-(\d{2})-(\d{2})$/);if(!match)throw new Error(`${label}: hãy nhập ngày hợp lệ.`);
+ const [,y,m,d]=match.map(Number),date=new Date(Date.UTC(y,m-1,d));
+ if(date.getUTCFullYear()!==y||date.getUTCMonth()!==m-1||date.getUTCDate()!==d)throw new Error(`${label}: ngày không tồn tại.`);
+ return date;
+}
+function readHeader(wb){
+ const ws=wb.getWorksheet('DO');if(!ws)throw new Error('Template thiếu sheet DO.');
+ return Object.fromEntries(HEADER_FIELDS.map(field=>{const value=cellValue(ws.getCell(field.do));return [field.key,field.type==='date'?dateInput(value):field.prefix?prefixParts(value).value:String(value??'')];}));
+}
+function colNumber(letters){return [...letters].reduce((n,c)=>n*26+c.charCodeAt(0)-64,0);}
+function colName(number){let text='';for(let n=number;n>0;n=Math.floor((n-1)/26))text=String.fromCharCode(65+(n-1)%26)+text;return text;}
+function rangeParts(range){
+ const m=range.replace(/\$/g,'').match(/^([A-Z]+)(\d+):([A-Z]+)(\d+)$/);if(!m)throw new Error(`Vùng merge không hợp lệ: ${range}.`);
+ return {left:colNumber(m[1]),top:+m[2],right:colNumber(m[3]),bottom:+m[4]};
+}
+function rangeText(range){return `${colName(range.left)}${range.top}:${colName(range.right)}${range.bottom}`;}
+function styleRow(ws,r,count){return {height:ws.getRow(r).height,styles:Array.from({length:count},(_,c)=>clone(ws.getCell(r,c+1).style))};}
+function applyRowStyle(ws,r,sample,count){
+ const row=ws.getRow(r);row.height=sample.height;
+ for(let c=1;c<=count;c++){const cell=row.getCell(c);cell.value=null;cell.style=clone(sample.styles[c-1]||{});}
+}
+function captureCell(cell){
+ return {value:cell.isMerged&&cell.master.address!==cell.address?null:clone(cell.value),style:clone(cell.style),note:clone(cell.note),dataValidation:clone(cell.dataValidation)};
+}
+function clearNote(cell){
+ // ExcelJS 4.4's note setter creates a comment even for undefined/null.
+ // Its pinned implementation has no public remove-note method.
+ delete cell._comment;
+}
+function restoreCell(cell,saved){cell.value=clone(saved.value);cell.style=clone(saved.style);if(saved.note!==undefined&&saved.note!==null)cell.note=clone(saved.note);else clearNote(cell);cell.dataValidation=clone(saved.dataValidation);}
+function replaceRegion(ws,region,count){
+ const {start,end,lastCol}=region,delta=count-(end-start+1),oldLast=ws.rowCount;
+ const samples={item:styleRow(ws,start,lastCol),total:styleRow(ws,region.total,lastCol),final:styleRow(ws,end,lastCol)};
+ const merges=(ws.model.merges||[]).map(rangeParts);
+ const footer=[];
+ for(let r=end+1;r<=oldLast;r++)footer.push({row:r,height:ws.getRow(r).height,hidden:ws.getRow(r).hidden,cells:Array.from({length:lastCol},(_,i)=>captureCell(ws.getCell(r,i+1)))});
+ for(const merge of merges){
+  if(merge.bottom>=start){
+   if(merge.left<18&&merge.top<start)throw new Error(`Merge ${rangeText(merge)} của ${ws.name} đi qua đầu vùng dữ liệu.`);
+   if(merge.left<18&&merge.top<=end&&merge.bottom>end)throw new Error(`Merge ${rangeText(merge)} của ${ws.name} đi qua footer.`);
+   ws.unMergeCells(rangeText(merge));
+  }
+ }
+ ws.spliceRows(start,end-start+1,...Array.from({length:count},()=>[]));
+ for(let r=start;r<start+count;r++)for(let c=1;c<=lastCol;c++){const cell=ws.getCell(r,c);cell.value=null;clearNote(cell);cell.dataValidation={};cell.style={};}
+ // Restore footer cells explicitly; spliceRows alone is unreliable around merges.
+ for(const saved of footer){const row=ws.getRow(saved.row+delta);row.height=saved.height;row.hidden=saved.hidden;saved.cells.forEach((cell,i)=>restoreCell(row.getCell(i+1),cell));}
+ for(const merge of merges){
+  if(merge.bottom<start)continue;
+  if(merge.top>end)ws.mergeCellsWithoutStyle(rangeText({...merge,top:merge.top+delta,bottom:merge.bottom+delta}));
+ }
+ if(ws.pageSetup.printArea)ws.pageSetup.printArea=ws.pageSetup.printArea.replace(/(\$?[A-Z]+\$?)(\d+)/g,(_,col,r)=>col+(+r>end?+r+delta:+r));
+ return samples;
+}
+function orderedGroups(rows){
+ const grouped=new Map();
+ for(const row of rows){const group=row.group??0;if(!grouped.has(group))grouped.set(group,[]);grouped.get(group).push(row);}
+ return [...grouped].sort(([a],[b])=>a-b).map(([group,items])=>({group,items}));
+}
+function setFormula(cell,formula,result){cell.value={formula,result};}
+function mergePo(ws,entries){
+ for(let i=0;i<entries.length;){let end=i;while(end+1<entries.length&&entries[end+1].row===entries[end].row+1&&entries[end+1].item.po===entries[i].item.po)end++;
+  ws.getCell(entries[i].row,1).value=Number(entries[i].item.po);
+  if(end>i)ws.mergeCells(`A${entries[i].row}:A${entries[end].row}`);i=end+1;
+ }
+}
+function fillPackingSheet(ws,rows,region){
+ const groups=orderedGroups(rows),count=rows.length+groups.length+1;
+ const styles=replaceRegion(ws,region,count),subtotalRows=[];let current=region.start;
+ for(const group of groups){
+  const first=current,entries=[],parents=new Map();
+  for(const item of group.items){
+   const r=current++;applyRowStyle(ws,r,styles.item,region.lastCol);entries.push({row:r,item});
+   ws.getCell(`B${r}`).value=item.name;
+   if(!item.auxiliary){ws.getCell(`D${r}`).value=item.code||null;ws.getCell(`E${r}`).value=item.qty;parents.set(item.id,{start:r,end:r});}
+   else{const parent=parents.get(item.parentId);if(!parent||parent.end!==r-1)throw new Error(`Thùng phụ dòng ${item.sourceRow} không liền kề hàng chính.`);parent.end=r;}
+   ws.getCell(`G${r}`).value=item.pkgs;ws.getCell(`H${r}`).value=item.L;ws.getCell(`I${r}`).value=item.W;ws.getCell(`J${r}`).value=item.H;
+   const cbm=(item.L??0)*(item.W??0)*(item.H??0)/1e9;
+   setFormula(ws.getCell(`K${r}`),`(H${r}*I${r}*J${r})/10^9`,cbm);
+   setFormula(ws.getCell(`M${r}`),`L${r}*G${r}`,0);setFormula(ws.getCell(`N${r}`),`K${r}*G${r}`,cbm*(item.pkgs??0));
+  }
+  mergePo(ws,entries);
+  for(const parent of parents.values())if(parent.end>parent.start)for(const col of ['D','E','F'])ws.mergeCells(`${col}${parent.start}:${col}${parent.end}`);
+  const total=current++;applyRowStyle(ws,total,styles.total,region.lastCol);ws.mergeCells(`A${total}:D${total}`);ws.getCell(`A${total}`).value='TOTAL';
+  for(const col of ['E','G','M','N']){
+   const result=group.items.reduce((sum,item)=>sum+(col==='E'?(item.qty??0):col==='G'?(item.pkgs??0):col==='M'?0:(item.L??0)*(item.W??0)*(item.H??0)/1e9*(item.pkgs??0)),0);
+   setFormula(ws.getCell(`${col}${total}`),`SUM(${col}${first}:${col}${total-1})`,result);
+  }
+  subtotalRows.push(total);
+ }
+ applyRowStyle(ws,current,styles.final,region.lastCol);ws.mergeCells(`A${current}:D${current}`);ws.getCell(`A${current}`).value='FINAL TOTAL';
+ for(const col of ['E','G','M','N'])setFormula(ws.getCell(`${col}${current}`),`SUM(${subtotalRows.map(r=>col+r).join(',')})`,subtotalRows.reduce((sum,r)=>sum+ws.getCell(`${col}${r}`).result,0));
+}
+function fillInvoice(ws,rows,region){
+ const items=orderedGroups(rows).flatMap(g=>g.items).filter(r=>!r.auxiliary),styles=replaceRegion(ws,region,items.length+1),entries=[];
+ let current=region.start;
+ for(const item of items){const r=current++;applyRowStyle(ws,r,styles.item,region.lastCol);entries.push({row:r,item});ws.getCell(`B${r}`).value=item.name;ws.getCell(`C${r}`).value=item.code||null;setFormula(ws.getCell(`G${r}`),`F${r}*D${r}`,0);}
+ mergePo(ws,entries);applyRowStyle(ws,current,styles.total,region.lastCol);ws.mergeCells(`A${current}:C${current}`);ws.getCell(`A${current}`).value='TOTAL';
+ for(const col of ['D','F','G'])setFormula(ws.getCell(`${col}${current}`),`SUM(${col}${region.start}:${col}${current-1})`,0);
+}
+// Drop the user's scratch work: extra sheets (Sheet1), side notes in R:U, DO!L12, and notes in DO!O6:O9.
+function removeDraftNotes(wb){
+ for(const ws of [...wb.worksheets])if(!(ws.name in SHEET_CONFIG))wb.removeWorksheet(ws.id);
+ for(const name of Object.keys(SHEET_CONFIG)){
+  const ws=wb.getWorksheet(name);
+  for(const range of [...(ws.model.merges||[])])if(rangeParts(range).right>=18)ws.unMergeCells(range);
+  for(let r=1;r<=ws.rowCount;r++)for(let c=18;c<=21;c++){const cell=ws.findRow(r)?.findCell(c);if(cell){cell.value=null;cell.style={};clearNote(cell);}}
+ }
+ const doSheet=wb.getWorksheet('DO');
+ if(doSheet){
+  doSheet.getCell('L12').value=null;
+  for(const addr of ['O6','O7','O8','O9','O10']){const cell=doSheet.getCell(addr);cell.value=null;cell.style={};clearNote(cell);}
+ }
+}
+function fillTemplate(wb,rows,header){
+ if(!Array.isArray(rows)||!rows.length)throw new Error('Chưa có dữ liệu CBM để xuất.');
+ const regions=validateTemplate(wb),defaults=readHeader(wb),out=cloneWorkbook(wb);
+ removeDraftNotes(out);
+ const doSheet=out.getWorksheet('DO');
+ for(const field of HEADER_FIELDS){
+  const original=cellValue(doSheet.getCell(field.do)),input=header[field.key]??defaults[field.key];
+  const value=field.type==='date'?excelDate(input,field.label):field.prefix?prefixParts(original).prefix+String(input):String(input);
+  doSheet.getCell(field.do).value=value;
+  for(const [name,addr] of [['PKL',field.pkl],['INV',field.inv]])out.getWorksheet(name).getCell(addr).value={formula:`DO!${field.do}`,result:clone(value)};
+ }
+ fillPackingSheet(out.getWorksheet('DO'),rows,regions.DO);fillPackingSheet(out.getWorksheet('PKL'),rows,regions.PKL);fillInvoice(out.getWorksheet('INV'),rows,regions.INV);
+ out.calcProperties={...out.calcProperties,fullCalcOnLoad:true,forceFullCalc:true};
+ return out;
+}
+</script>
+<script id="ui">
+'use strict';
+const $=id=>document.getElementById(id);
+const escapeHTML=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const numberFormat=new Intl.NumberFormat('vi-VN',{maximumFractionDigits:6});
+const state={parsed:null,cbmName:'',template:null,templateName:'',customTemplate:false,defaults:null,loading:{cbm:false,template:false},token:{cbm:0,template:0},exporting:false};
+const STORAGE_KEY='dongcont.header.v1';
+function showMessage(id,message){$(id).textContent=message;$(id).hidden=!message;}
+function savedHeader(){try{const value=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}');return value&&typeof value==='object'&&!Array.isArray(value)?Object.fromEntries(HEADER_FIELDS.filter(f=>typeof value[f.key]==='string').map(f=>[f.key,value[f.key]])):{};}catch{return {};}}
+function formHeader(){return Object.fromEntries(HEADER_FIELDS.map(f=>[f.key,$(`field-${f.key}`).value]));}
+function persistHeader(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(formHeader()));showMessage('storageNotice','');}catch{showMessage('storageNotice','Trình duyệt không cho lưu thông tin. Bạn vẫn có thể xuất Excel; lần sau cần nhập lại phần đầu.');}}
+function renderHeader(values={},enabled=false){
+ $('headerForm').innerHTML=HEADER_FIELDS.map(f=>`<label class="field${f.wide?' wide':''}" for="field-${f.key}">${f.label}<input id="field-${f.key}" name="${f.key}" type="${f.type==='date'?'date':'text'}" value="${escapeHTML(values[f.key]??'')}" ${enabled?'':'disabled'}><small>${f.prefix?'Chỉ nhập giá trị · ':''}DO!${f.do}</small></label>`).join('');
+ $('resetHeader').disabled=!enabled;
+}
+function updateReady(){
+ const busy=state.loading.cbm||state.loading.template||state.exporting;
+ $('exportButton').disabled=busy||!state.parsed||!state.template||!window.ExcelJS;
+ $('exportButton').textContent=state.exporting?'Đang tạo Excel…':'Xuất Excel';
+ $('cbmFile').disabled=state.exporting||!window.ExcelJS;
+ $('modeFile').disabled=!state.parsed||!state.template;if($('modeFile').disabled&&state.fileMode)setMode(false);else if(state.fileMode)schedulePreview();
+ $('resetHeader').disabled=!state.template||state.exporting||state.loading.template;
+ if(state.exporting)$('status').textContent='Đang điền DO, PKL và INV…';
+ else if(state.loading.cbm||state.loading.template)$('status').textContent='Đang đọc file Excel…';
+ else if(state.parsed&&state.template)$('status').textContent='Sẵn sàng xuất Excel. Kiểm tra thông tin chứng từ trước khi tải.';
+ else $('status').textContent=!state.template?'Không nạp được template.':'Chọn file CBM để xem dữ liệu.';
+ try{$('exportName').textContent=state.cbmName?`File xuất: ${exportFilename(formHeader().booking,state.cbmName)}`:'Tên file xuất theo Booking và tên cont trong file CBM.';}catch{$('exportName').textContent='Nhập Booking để đặt tên file xuất.';}
+}
+function renderPreview(){
+ const parsed=state.parsed;$('empty').hidden=!!parsed;
+ if(!parsed){$('previewBody').replaceChildren();$('qtyTotal').textContent='—';$('pkgsTotal').textContent='—';$('groupCount').textContent='';$('previewInfo').textContent='Chưa có dữ liệu.';return;}
+ const {rows,totals}=parsed,groups=orderedGroups(rows);
+ $('previewInfo').textContent=`${rows.length} dòng DO/PKL · ${rows.filter(r=>!r.auxiliary).length} dòng INV · ${rows.filter(r=>r.auxiliary).length} thùng phụ`;
+ $('qtyTotal').textContent=numberFormat.format(totals.qty);$('pkgsTotal').textContent=numberFormat.format(totals.pkgs);$('groupCount').textContent=`${groups.length} nhóm nhà máy`;
+ $('previewBody').innerHTML=groups.map((group,index)=>{
+  const qty=group.items.reduce((s,r)=>s+(r.qty??0),0),pkgs=group.items.reduce((s,r)=>s+(r.pkgs??0),0);
+  return `<tr class="group"><td colspan="8">Nhóm ${index+1} · PO ${[...new Set(group.items.map(r=>r.po))].map(escapeHTML).join(', ')}</td></tr>`+group.items.map(r=>`<tr class="${r.auxiliary?'aux':''}"><td>${escapeHTML(r.po)}</td><td class="name">${r.auxiliary?'<span class="badge">Thùng phụ</span><br>':''}${escapeHTML(r.name)}</td><td class="code">${escapeHTML(r.code)}</td>${['qty','pkgs','L','W','H'].map(key=>`<td class="num">${r[key]===null?'':numberFormat.format(r[key])}</td>`).join('')}</tr>`).join('')+`<tr class="total"><td colspan="3">TOTAL · Nhóm ${index+1}</td><td>${numberFormat.format(qty)}</td><td>${numberFormat.format(pkgs)}</td><td colspan="3"></td></tr>`;
+ }).join('')+`<tr class="total"><td colspan="3">FINAL TOTAL</td><td>${numberFormat.format(totals.qty)}</td><td>${numberFormat.format(totals.pkgs)}</td><td colspan="3"></td></tr>`;
+}
+async function loadFile(kind,file){
+ if(!file)return;const token=++state.token[kind];state.loading[kind]=true;showMessage(`${kind}Error`,'');showMessage('exportError','');
+ state.parsed=null;state.cbmName='';renderPreview();
+ updateReady();
+ try{
+  if(!/\.xlsx$/i.test(file.name))throw new Error('Vui lòng chọn file .xlsx.');
+  if(!window.ExcelJS)throw new Error('Không tải được ExcelJS. Kiểm tra kết nối mạng rồi tải lại trang.');
+  const wb=new ExcelJS.Workbook();await wb.xlsx.load(await file.arrayBuffer());if(token!==state.token[kind])return;
+  state.cbmWb=wb;state.cbmName=file.name;$('cbmInfo').textContent=file.name;
+  // Pick the cont whose booking matches the form; otherwise TOTAL.
+  const probe=parseCbm(wb),booking=norm(formHeader().booking),match=probe.conts.findIndex((c,i)=>i>0&&booking&&norm(c.booking)===booking);
+  reparseCbm(probe.sheetName,match>0?match:0);
+ }catch(error){if(token===state.token[kind]){showMessage(`${kind}Error`,error.message);$(`${kind}Info`).textContent=`Không đọc được ${file.name}`;if(kind==='template')$('headerOrigin').textContent='Cần template hợp lệ.';}}
+ finally{if(token===state.token[kind]){state.loading[kind]=false;updateReady();}}
+}
+function reparseCbm(sheet,cont){
+ showMessage('cbmError','');state.parsed=null;
+ try{
+  state.parsed=parseCbm(state.cbmWb,{sheet,cont});
+  const {conts,contIndex}=state.parsed,selected=conts[contIndex];
+  $('cbmInfo').textContent=`${state.cbmName} · ${selected.name}`;
+  // Fill Booking / Cont-Seal from the CBM cont header when it has them.
+  if(selected.booking)$('field-booking').value=selected.booking;
+  if(selected.seal){const tail=$('field-contSeal').value.match(/\/\s*\d+\s*X\s*\d+\w*\s*$/i)?.[0]??'';$('field-contSeal').value=`${selected.seal} ${tail}`.trim();}
+  if(selected.booking||selected.seal)persistHeader();
+ }catch(error){showMessage('cbmError',error.message);}
+ renderPreview();updateReady();
+}
+function base64Bytes(base64){const binary=atob(base64);return Uint8Array.from(binary,c=>c.charCodeAt(0));}
+function bytesBase64(bytes){let binary='';for(let i=0;i<bytes.length;i+=32768)binary+=String.fromCharCode(...bytes.subarray(i,i+32768));return btoa(binary);}
+async function readTemplateBytes(bytes){const wb=new ExcelJS.Workbook();await wb.xlsx.load(bytes);validateTemplate(wb);return {wb,defaults:readHeader(wb)};}
+function activateTemplate(loaded,name,custom){
+ state.template=loaded.wb;state.defaults=loaded.defaults;state.templateName=name;state.customTemplate=custom;
+ const saved=savedHeader();renderHeader({...loaded.defaults,...saved},true);
+ $('headerOrigin').textContent=Object.keys(saved).length?'Đã dùng thông tin lưu lần trước.':'Đã lấy thông tin từ template.';
+}
+async function initializeTemplate(){
+ if(!window.ExcelJS)return;
+ state.loading.template=true;updateReady();
+ try{activateTemplate(await readTemplateBytes(base64Bytes(TEMPLATE_B64)),TEMPLATE_NAME,false);}
+ catch(error){showMessage('libraryError',`Không nạp được template: ${error.message}`);}
+ finally{state.loading.template=false;updateReady();}
+}
+function setMode(file){
+ state.fileMode=file;$('modeCbm').setAttribute('aria-pressed',!file);$('modeFile').setAttribute('aria-pressed',file);
+ $('cbmView').hidden=file;$('fileView').hidden=!file;if(file)renderFilePreview();
+}
+// shortcut: shows cell text only (no styles/merge spans), enough to check values before export.
+let previewTimer;
+function schedulePreview(){clearTimeout(previewTimer);previewTimer=setTimeout(renderFilePreview,250);}
+function sheetHTML(ws){
+ const cols=ws.columnCount,letter=n=>{let s='';for(;n>0;n=Math.floor((n-1)/26))s=String.fromCharCode(65+(n-1)%26)+s;return s;},out=['<table><thead><tr><th></th>'];
+ for(let c=1;c<=cols;c++)out.push(`<th>${letter(c)}</th>`);out.push('</tr></thead><tbody>');
+ for(let r=1;r<=ws.rowCount;r++){
+  const row=ws.getRow(r);out.push(`<tr><th>${r}</th>`);
+  for(let c=1;c<=cols;c++){const cell=row.getCell(c),slave=cell.isMerged&&cell.master.address!==cell.address;let text='';try{text=slave?'':cell.text;}catch{}const f=!slave&&cell.formula;out.push(f?`<td class="formula" title="=${escapeHTML(f)}">${escapeHTML(text)}<small>=${escapeHTML(f)}</small></td>`:`<td>${escapeHTML(text)}</td>`);}
+  out.push('</tr>');
+ }
+ out.push('</tbody></table>');return out.join('');
+}
+function renderFilePreview(){
+ if(!state.parsed||!state.template||!state.fileMode)return;
+ const header=formHeader(),key=JSON.stringify(header);
+ // Rebuild only when CBM data, template or form changed; tab switching just toggles visibility.
+ if(state.preview?.parsed===state.parsed&&state.preview.template===state.template&&state.preview.key===key)return;
+ state.preview={parsed:state.parsed,template:state.template,key};
+ let wb;try{wb=fillTemplate(state.template,state.parsed.rows,header);}catch(error){$('sheetTabs').replaceChildren();$('sheetView').innerHTML=`<div class="message error">${escapeHTML(error.message)}</div>`;return;}
+ const sheets=wb.worksheets.filter(ws=>ws.state!=='hidden');
+ if(!sheets.some(ws=>ws.name===state.previewSheet))state.previewSheet=sheets[0]?.name;
+ $('sheetTabs').innerHTML=sheets.map(ws=>`<button data-sheet="${escapeHTML(ws.name)}" aria-pressed="${ws.name===state.previewSheet}">${escapeHTML(ws.name)}</button>`).join('');
+ $('sheetView').innerHTML=sheets.map(ws=>`<div data-sheet="${escapeHTML(ws.name)}"${ws.name===state.previewSheet?'':' hidden'}>${sheetHTML(ws)}</div>`).join('');
+}
+function showSheet(name){
+ state.previewSheet=name;
+ for(const el of $('sheetTabs').children)el.setAttribute('aria-pressed',el.dataset.sheet===name);
+ for(const el of $('sheetView').children)el.hidden=el.dataset.sheet!==name;
+ $('sheetView').scrollTo(0,0);
+}
+let toastTimer;
+function toast(message){$('toast').textContent=message;$('toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').hidden=true,4500);}
+async function exportFile(){
+ if(!state.parsed||!state.template||state.exporting||state.loading.cbm||state.loading.template)return;
+ if(!$('headerForm').reportValidity())return;
+ state.exporting=true;updateReady();showMessage('exportError','');
+ try{
+  const header=formHeader(),filename=exportFilename(header.booking,state.cbmName);persistHeader();
+  const wb=fillTemplate(state.template,state.parsed.rows,header),buffer=await wb.xlsx.writeBuffer();
+  const url=URL.createObjectURL(new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));
+  const link=document.createElement('a');link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),15000);
+  toast('Đã tạo Excel gồm DO, PKL và INV.');
+ }catch(error){showMessage('exportError',`Không thể xuất Excel: ${error.message}`);}
+ finally{state.exporting=false;updateReady();}
+}
+$('cbmFile').addEventListener('change',e=>loadFile('cbm',e.target.files[0]));
+$('modeCbm').addEventListener('click',()=>setMode(false));$('modeFile').addEventListener('click',()=>setMode(true));$('sheetTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(b)showSheet(b.dataset.sheet);});
+$('headerForm').addEventListener('submit',e=>e.preventDefault());$('headerForm').addEventListener('input',()=>{persistHeader();$('headerOrigin').textContent='Thông tin đang sửa.';updateReady();});
+$('resetHeader').addEventListener('click',()=>{if(state.defaults){renderHeader(state.defaults,true);persistHeader();$('headerOrigin').textContent='Đã lấy lại từ template.';updateReady();toast('Đã khôi phục thông tin từ template.');}});
+$('exportButton').addEventListener('click',exportFile);
+renderHeader();updateReady();if(!window.ExcelJS)showMessage('libraryError','Không tải được ExcelJS 4.4.0. Cần kết nối mạng để tải thư viện CDN; hãy tải lại trang.');else initializeTemplate();
+</script>
+</body>
+</html>
