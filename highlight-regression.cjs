@@ -21,7 +21,7 @@ async function main() {
   assert.equal(parsed.rows.length, 4);
   const row = parsed.rows[0];
   const expected = {
-    soTK:['108723643450','E4'],loaiHinh:['C11 1 [ 4 ]','P6'],coQuanHQ:['HQTTHUAN','L7'],
+    soTK:['108723643450','E4'],loaiHinh:['C11','P6'],coQuanHQ:['HQTTHUAN','L7'],
     nguoiXK:['DONGGUAN BAIYOU ELECTRONIC LIMITED','H23'],luuKho:['06B1A04','U30'],
     soKien:[8,'K36'],dvtKien:['PK','P36'],tongGross:[68,'K37'],dvtGross:['KGM','P37'],
     maHS:['94054190','G149'],sl1:[35,'V153'],dvt1:['SET','AE153'],sl2:[35,'V154'],dvt2:['PCE','AE154'],
