@@ -23,8 +23,8 @@
 <div id="status" role="status"></div><div id="errors" role="alert"></div>
 <section aria-labelledby="outputTitle"><div class="toolbar"><div><h2 id="outputTitle">Sheet Output <span id="rowCount" class="count">· 0 dòng</span></h2></div><div class="actions"><span id="selectedCount" class="count">0 ô đã chọn</span><label><input id="withHeader" type="checkbox"> Kèm tiêu đề</label><button id="copy" disabled>Copy</button><button id="download" class="primary" disabled>Tải output.xlsx</button><button id="clear" disabled>Xóa tất cả</button></div></div>
 <p class="hint">Kéo chọn các ô trong một cột rồi Ctrl+C để copy · Shift + click để chọn dải · Nhấp đúp ô để xem nguồn · Checkbox để copy cả dòng · <span style="background:#fff3cd;padding:1px 6px;border-radius:4px;border:1px solid #ffe082;color:#7a5a00">Màu vàng: Trùng người xuất khẩu</span></p>
-<div id="tableWrap" class="table-wrap" tabindex="0" aria-label="Bảng Output. Ctrl+C để copy các dòng đã chọn."><table id="output"><thead><tr id="head"></tr></thead><tbody id="body"></tbody></table><div id="empty"><strong>Bảng Output đang trống</strong><p>Dữ liệu từ các tờ khai sẽ hiển thị ở đây, đủ 16 cột.</p></div></div>
-<footer><span>Số và ngày hiển thị theo định dạng Việt Nam.</span><span>Dữ liệu chỉ giữ trong phiên hiện tại.</span></footer></section>
+<div id="tableWrap" class="table-wrap" tabindex="0" aria-label="Bảng Output. Ctrl+C để copy các dòng đã chọn."><table id="output"><thead><tr id="head"></tr></thead><tbody id="body"></tbody></table><div id="empty"><strong>Bảng Output đang trống</strong><p>Dữ liệu từ các tờ khai sẽ hiển thị ở đây, gồm các trường đã đánh dấu và cột thông tin tổng hợp.</p></div></div>
+<footer><span>Số và ngày theo định dạng Việt Nam. Số kiện và Tổng Gross là số chung của tờ khai, lặp lại ở mỗi dòng hàng.</span><span>Dữ liệu chỉ giữ trong phiên hiện tại.</span></footer></section>
 </main>
 <dialog id="duplicate" aria-labelledby="duplicateTitle"><h2 id="duplicateTitle">Tờ khai trùng</h2><p id="duplicateText"></p><form method="dialog" class="actions"><button value="no" autofocus>Không</button><button value="yes" class="primary">Có, ghi đè</button></form></dialog>
 <dialog id="source" aria-labelledby="sourceTitle"><header><h2 id="sourceTitle"></h2><button id="closeSource" aria-label="Đóng tờ khai gốc">Đóng ×</button></header><div id="sourceBody"></div></dialog>
@@ -42,6 +42,10 @@ const FIELDS = [
  {key:'coQuanHQ',title:'Tên cơ quan Hải quan tiếp nhận tờ khai',scope:'header',label:'Tên cơ quan Hải quan tiếp nhận tờ khai',width:32},
  {key:'nguoiXK',title:'Người XK',scope:'header',label:'Người xuất khẩu',subLabel:'Tên',width:34},
  {key:'luuKho',title:'Địa điểm lưu kho',scope:'header',label:'Địa điểm lưu kho',width:14},
+ {key:'soKien',title:'Số kiện (tờ khai)',scope:'header',label:'Số lượng',type:'number',width:13},
+ {key:'dvtKien',title:'ĐVT kiện',scope:'header',label:'Số lượng',nth:2,width:9},
+ {key:'tongGross',title:'Tổng Gross (tờ khai)',scope:'header',label:'Tổng trọng lượng hàng (Gross)',type:'number',width:17},
+ {key:'dvtGross',title:'ĐVT Gross',scope:'header',label:'Tổng trọng lượng hàng (Gross)',nth:2,width:10},
  {key:'maHS',title:'Mã HS',scope:'item',label:'Mã số hàng hóa',width:12},
  {key:'moTa',title:'Mô tả',scope:'item',label:'Mô tả hàng hóa',width:70},
  {key:'sl1',title:'SL1',scope:'item',label:'Số lượng (1)',type:'number',width:9},
@@ -50,9 +54,14 @@ const FIELDS = [
  {key:'dvt2',title:'ĐVT2',scope:'item',label:'Số lượng (2)',nth:2,width:8},
  {key:'donGia',title:'Đơn giá HĐ',scope:'item',label:'Đơn giá hóa đơn',type:'number',format:'#,##0.00',width:13},
  {key:'triGia',title:'Trị giá HĐ',scope:'item',label:'Trị giá hóa đơn',type:'number',format:'#,##0.00',width:14},
- {key:'tienTe',title:'Tiền tệ',scope:'item',label:'Đơn giá hóa đơn',nth:2,width:9}
+ {key:'tienTe',title:'Tiền tệ',scope:'item',label:'Đơn giá hóa đơn',nth:2,width:9},
+ {key:'dvtDonGia',title:'ĐVT đơn giá',scope:'item',label:'Đơn giá hóa đơn',nth:3,width:11},
+ {key:'maXuatXu',title:'Mã nước xuất xứ',scope:'item',label:'Nước xuất xứ',width:13},
+ {key:'tenXuatXu',title:'Tên nước xuất xứ',scope:'item',label:'Nước xuất xứ',nth:2,width:18},
+ {key:'maKemXuatXu',title:'Mã kèm xuất xứ',scope:'item',label:'Nước xuất xứ',nth:3,width:13},
+ {key:'thongTin',title:'Thông tin',width:36}
 ];
-const KNOWN_LABELS = new Set([...FIELDS.map(f=>f.label).filter(Boolean),'Số tờ khai đầu tiên','Số tờ khai tạm nhập tái xuất tương ứng','Ngày thay đổi đăng ký','Mã phân loại tái xác nhận giá','Mã phân loại kiểm tra','Mã số thuế đại diện','Mã bộ phận xử lý tờ khai','Tên','Mã','Thuế xuất khẩu','Trị giá tính thuế (S)','Trị giá tính thuế (M)','Số lượng tính thuế','Đơn giá tính thuế','Mã số hàng hóa đại diện của tờ khai','Số của mục khai khoản điều chỉnh','Thời hạn tái nhập/ tái xuất','Thuế nhập khẩu','Trị giá tính thuế(S)','Trị giá tính thuế(M)','Mã bưu chính','Địa chỉ']);
+const KNOWN_LABELS = new Set([...FIELDS.map(f=>f.label).filter(Boolean),'Ký hiệu và số hiệu','Số tờ khai đầu tiên','Số tờ khai tạm nhập tái xuất tương ứng','Ngày thay đổi đăng ký','Mã phân loại tái xác nhận giá','Mã phân loại kiểm tra','Mã số thuế đại diện','Mã bộ phận xử lý tờ khai','Tên','Mã','Thuế xuất khẩu','Trị giá tính thuế (S)','Trị giá tính thuế (M)','Số lượng tính thuế','Đơn giá tính thuế','Mã số hàng hóa đại diện của tờ khai','Số của mục khai khoản điều chỉnh','Thời hạn tái nhập/ tái xuất','Thuế nhập khẩu','Trị giá tính thuế(S)','Trị giá tính thuế(M)','Mã bưu chính','Địa chỉ']);
 function normalize(value){return String(value??'').normalize('NFC').trim().replace(/\s+/g,' ');}
 function parseVNNumber(value){
  if(typeof value==='number')return Number.isFinite(value)?value:null;
@@ -63,10 +72,14 @@ function parseVNNumber(value){
 function parseVNDate(value){
  if(value instanceof Date)return Number.isNaN(value.getTime())?null:new Date(value);
  const m=normalize(value).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?: (\d{1,2}):(\d{2})(?::(\d{2}))?)?$/);if(!m)return null;
- const [,d,mo,y,h=0,mi=0,s=0]=m.map(Number);const date=new Date(y,mo-1,d,h,mi,s);
+ const [,d,mo,y,h=0,mi=0,s=0]=m.map(v=>v===undefined?undefined:Number(v));const date=new Date(y,mo-1,d,h,mi,s);
  return date.getFullYear()===y&&date.getMonth()===mo-1&&date.getDate()===d&&date.getHours()===h&&date.getMinutes()===mi&&date.getSeconds()===s?date:null;
 }
 function dateText(date){if(!(date instanceof Date)||Number.isNaN(+date))return '';const p=n=>String(n).padStart(2,'0');return `${p(date.getDate())}/${p(date.getMonth()+1)}/${date.getFullYear()} ${p(date.getHours())}:${p(date.getMinutes())}:${p(date.getSeconds())}`;}
+function declarationInfo(values){
+ const type=normalize(values.loaiHinh).split(' ')[0],date=dateText(values.ngayDK).split(' ')[0];
+ return `FROM SAVIMEX\nTK ${normalize(values.soTK)} - ${type}\nDATE: ${date}\n${normalize(values.coQuanHQ)} / ${normalize(values.luuKho)}`;
+}
 // Merged cells only store a value in the top-left cell; resolve any cell to that master.
 function cellAt(ws,r,c){
  const m=(ws['!merges']||[]).find(m=>r>=m.s.r&&r<=m.e.r&&c>=m.s.c&&c<=m.e.c);
@@ -107,6 +120,7 @@ function parseWorkbook(wb,fileName=''){
   }
  }
  readFields('header',0,Infinity,headers);
+ headers.values.thongTin=declarationInfo(headers.values);
  const soTK=headers.values.soTK;if(!soTK)errors.push(`${fileName}: Số tờ khai trống.`);
  const boundaries=cells.filter(c=>c.c===2&&(/^(<\d+>|<EXP>|<IMP>)$/.test(normalize(c.cell.v))));
  const rows=[];
@@ -125,7 +139,8 @@ const vnFormat=new Intl.NumberFormat('vi-VN',{maximumFractionDigits:20});
 function display(v){return v instanceof Date?dateText(v):typeof v==='number'?vnFormat.format(v):v??'';}
 function toTSV(rows,withHeader=false,fields=FIELDS){
  const decimal=(1.5).toLocaleString().charAt(1);
- const clean=v=>String(v??'').replace(/[\t\r\n]+/g,' ');
+ // Excel reads quoted TSV fields with embedded newlines as a single multiline cell.
+ const clean=v=>{const s=String(v??'').replace(/\r\n?/g,'\n');return /[\t\n"]/.test(s)?`"${s.replace(/"/g,'""')}"`:s;};
  const lines=rows.map(row=>fields.map(f=>{const v=row.values[f.key];return clean(v instanceof Date?dateText(v):typeof v==='number'?v.toLocaleString('en-US',{useGrouping:false,maximumFractionDigits:20}).replace('.',decimal):v);}).join('\t'));
  if(withHeader)lines.unshift(fields.map(f=>f.title).join('\t'));
  return lines.join('\r\n');
@@ -203,7 +218,7 @@ async function exportXlsx(rows){
  rows.forEach(row=>{
   // Excel stores wall-clock dates without a timezone; avoid shifting the local declaration time.
   const values=FIELDS.map(f=>{const v=row.values[f.key];return v instanceof Date?new Date(Date.UTC(v.getFullYear(),v.getMonth(),v.getDate(),v.getHours(),v.getMinutes(),v.getSeconds())):v??null;});
-  const excelRow=ws.addRow(values);excelRow.height=Math.max(45,Math.ceil(String(row.values.moTa||'').length/72)*16);
+  const excelRow=ws.addRow(values);excelRow.height=Math.max(72,Math.ceil(String(row.values.moTa||'').length/72)*16,(String(row.values.thongTin||'').split('\n').length+1)*16);
  });
  ws.eachRow((row,r)=>row.eachCell({includeEmpty:true},(cell,c)=>{
   cell.alignment={horizontal:'center',vertical:'middle',wrapText:true};
