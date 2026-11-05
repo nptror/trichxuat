@@ -33,12 +33,17 @@ async function main() {
     assert.equal(row.src[key],addr,`${key}: source address`);
   }
   assert.equal(row.src.ngayDK,'G8');
+  assert.equal(row.values.ngayDK.getHours(),0);
+  assert.equal(row.values.ngayDK.getMinutes(),0);
+  assert.equal(row.values.ngayDK.getSeconds(),0);
   assert.equal(row.src.moTa,'G150');
   assert.ok(row.values.moTa.startsWith('PO# 66011#&'));
   const expectedInfo='FROM SAVIMEX\nTK 108723643450 - C11\nDATE: 15/10/2026\nHQTTHUAN / 06B1A04';
   assert.equal(row.values.thongTin,expectedInfo);
-  assert.equal(vm.runInContext('FIELDS.at(-1).key',context),'thongTin');
+  assert.equal(vm.runInContext('FIELDS[0].key',context),'thongTin');
   context.rows=[row];
+  assert.equal(vm.runInContext("toTSV(rows,false,FIELDS.filter(f=>f.key==='ngayDK'))",context),'15/10/2026');
+  assert.equal(vm.runInContext("toTSV(rows,false,FIELDS.filter(f=>f.key==='loaiHinh'))",context),'C11');
   const tsv=vm.runInContext("toTSV(rows,false,FIELDS.filter(f=>f.key==='thongTin'))",context);
   assert.equal(tsv,'"'+expectedInfo+'"','Copy must retain four lines in one quoted cell');
   context.rows=[{values:{moTa:'A "quoted"\nitem'}}];
@@ -48,9 +53,14 @@ async function main() {
   const out=new ExcelJS.Workbook();await out.xlsx.load(buffer);
   const ws=out.getWorksheet('Output');
   const fields=vm.runInContext('FIELDS',context);
-  assert.equal(ws.getRow(1).getCell(fields.length).value,'Thông tin');
-  assert.equal(ws.getRow(2).getCell(fields.length).value,expectedInfo);
-  assert.equal(ws.getRow(2).getCell(fields.length).alignment.wrapText,true);
+  const dateCell=ws.getCell(2,fields.findIndex(f=>f.key==='ngayDK')+1);
+  assert.equal(dateCell.numFmt,'dd/mm/yyyy');
+  assert.equal(dateCell.value.toISOString(),'2026-10-15T00:00:00.000Z');
+  assert.equal(ws.getRow(1).getCell(1).value,'Thông tin');
+  assert.equal(ws.getRow(2).getCell(1).value,expectedInfo);
+  assert.equal(ws.getRow(2).getCell(1).alignment.wrapText,true);
+  assert.deepEqual(ws.model.merges,['A2:A5'],'Four identical adjacent information cells must merge');
+  for(let r=2;r<=5;r++)assert.equal(ws.getCell(r,1).value,expectedInfo);
   assert.ok(ws.getRow(2).height>=64,'Four-line information must fit the row');
   for(const [key,[value]] of Object.entries(expected))assert.equal(ws.getCell(2,fields.findIndex(f=>f.key===key)+1).value,value);
   assert.equal(vm.runInContext("declarationInfo({soTK:'309014359050',loaiHinh:'E62 9',ngayDK:parseVNDate('30/09/2026'),coQuanHQ:'HQTTHUAN',luuKho:'02PJOZZ'})",context),'FROM SAVIMEX\nTK 309014359050 - E62\nDATE: 30/09/2026\nHQTTHUAN / 02PJOZZ');
@@ -71,6 +81,16 @@ async function main() {
   for(const a of ['L36','P36'])delete sheet[a];
   const missing=vm.runInContext('parseWorkbook(input)',context).rows[0];
   assert.equal(missing.values.soKien,null);assert.equal(missing.values.dvtKien,'');
+  context.rows=['A','A','B','A','A','',''].map((thongTin,i)=>({values:{thongTin,moTa:'Item '+i,sl1:i+1}}));
+  const grouped=new ExcelJS.Workbook();await grouped.xlsx.load(await vm.runInContext('exportXlsx(rows)',context));
+  const groupedSheet=grouped.getWorksheet('Output');
+  assert.deepEqual(groupedSheet.model.merges,['A2:A3','A5:A6'],'Separate groups and empty information must stay separate');
+  const qtyColumn=fields.findIndex(f=>f.key==='sl1')+1;
+  for(let r=2;r<=8;r++)assert.equal(groupedSheet.getCell(r,qtyColumn).value,r-1,'Merging information must preserve item rows');
+  const copied=vm.runInContext("toTSV(rows,false,FIELDS.filter(f=>f.key==='thongTin'))",context);
+  assert.equal(copied,'A\r\nA\r\nB\r\nA\r\nA\r\n\r\n','Copy retains every item row');
+  context.rows=[];
+  await vm.runInContext('exportXlsx(rows)',context);
   console.log(`PASS: highlighted fields and source cells; ${fields.length} output columns; fixed FROM with dynamic declaration; multiline clipboard and XLSX; moved and missing inputs.`);
 }
 main().catch(e=>{console.error(e);process.exitCode=1;});

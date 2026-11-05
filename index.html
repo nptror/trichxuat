@@ -10,6 +10,8 @@
 #output td[data-key]{cursor:cell;user-select:none;touch-action:pan-x}
 #output td[data-key].cell-selected,#output tr.selected td.cell-selected,#output tr.duplicate td.cell-selected{background:#d5eee3;box-shadow:inset 0 0 0 2px #176b53}
 .brand{display:flex;align-items:center;gap:14px;min-width:0}.brand-logo{display:block;width:64px;height:64px;object-fit:contain;flex-shrink:0}@media(max-width:700px){.brand-logo{width:48px;height:48px}.brand{gap:10px}}
+/* Large scrollbars for easy grabbing (Chromium/Edge/Safari). Firefox only supports thin/auto widths. */
+.table-wrap::-webkit-scrollbar{height:18px;width:14px}.table-wrap::-webkit-scrollbar-track{background:#eef2f0;border-radius:9px}.table-wrap::-webkit-scrollbar-thumb{background:#9fb3aa;border-radius:9px;border:3px solid #eef2f0}.table-wrap::-webkit-scrollbar-thumb:hover{background:#6f8c80}.table-wrap::-webkit-scrollbar-thumb:active{background:#176b53}.table-wrap::-webkit-scrollbar-corner{background:#eef2f0}
 </style>
 </head>
 <body>
@@ -22,7 +24,7 @@
 </section>
 <div id="status" role="status"></div><div id="errors" role="alert"></div>
 <section aria-labelledby="outputTitle"><div class="toolbar"><div><h2 id="outputTitle">Sheet Output <span id="rowCount" class="count">· 0 dòng</span></h2></div><div class="actions"><span id="selectedCount" class="count">0 ô đã chọn</span><label><input id="withHeader" type="checkbox"> Kèm tiêu đề</label><button id="copy" disabled>Copy</button><button id="download" class="primary" disabled>Tải output.xlsx</button><button id="clear" disabled>Xóa tất cả</button></div></div>
-<p class="hint">Kéo chọn vùng ô bất kỳ rồi Ctrl+C để copy · Shift + click / Shift + mũi tên để mở rộng · Ctrl + click để chọn thêm vùng · Nhấp đúp ô để xem nguồn · Checkbox để copy cả dòng · <span style="background:#fff3cd;padding:1px 6px;border-radius:4px;border:1px solid #ffe082;color:#7a5a00">Màu vàng: Trùng người xuất khẩu</span></p>
+<p class="hint">Kéo chọn các ô trong một cột rồi Ctrl+C để copy · Shift + click để chọn dải · Nhấp đúp ô để xem nguồn · Checkbox để copy cả dòng · <span style="background:#fff3cd;padding:1px 6px;border-radius:4px;border:1px solid #ffe082;color:#7a5a00">Màu vàng: Trùng người xuất khẩu</span></p>
 <div id="tableWrap" class="table-wrap" tabindex="0" aria-label="Bảng Output. Ctrl+C để copy các dòng đã chọn."><table id="output"><thead><tr id="head"></tr></thead><tbody id="body"></tbody></table><div id="empty"><strong>Bảng Output đang trống</strong><p>Dữ liệu từ các tờ khai sẽ hiển thị ở đây, gồm các trường đã đánh dấu và cột thông tin tổng hợp.</p></div></div>
 <footer><span>Số và ngày theo định dạng Việt Nam. Số kiện và Tổng Gross là số chung của tờ khai, lặp lại ở mỗi dòng hàng.</span><span>Dữ liệu chỉ giữ trong phiên hiện tại.</span></footer></section>
 </main>
@@ -35,9 +37,10 @@
 'use strict';
 // All extraction rules use labels and relative rows; column indexes are zero-based.
 const FIELDS = [
+ {key:'thongTin',title:'Thông tin',width:36},
  {key:'stt',title:'STT',type:'number',width:6},
  {key:'soTK',title:'Số TK',scope:'header',label:'Số tờ khai',width:16},
- {key:'ngayDK',title:'Ngày ĐK',scope:'header',label:'Ngày đăng ký',type:'date',width:20},
+ {key:'ngayDK',title:'Ngày ĐK',scope:'header',label:'Ngày đăng ký',type:'date',width:13},
  {key:'loaiHinh',title:'Mã loại hình',scope:'header',label:'Mã loại hình',width:13},
  {key:'coQuanHQ',title:'Tên cơ quan Hải quan tiếp nhận tờ khai',scope:'header',label:'Tên cơ quan Hải quan tiếp nhận tờ khai',width:32},
  {key:'nguoiXK',title:'Người XK',scope:'header',label:'Người xuất khẩu',subLabel:'Tên',width:34},
@@ -58,8 +61,7 @@ const FIELDS = [
  {key:'dvtDonGia',title:'ĐVT đơn giá',scope:'item',label:'Đơn giá hóa đơn',nth:3,width:11},
  {key:'maXuatXu',title:'Mã nước xuất xứ',scope:'item',label:'Nước xuất xứ',width:13},
  {key:'tenXuatXu',title:'Tên nước xuất xứ',scope:'item',label:'Nước xuất xứ',nth:2,width:18},
- {key:'maKemXuatXu',title:'Mã kèm xuất xứ',scope:'item',label:'Nước xuất xứ',nth:3,width:13},
- {key:'thongTin',title:'Thông tin',width:36}
+ {key:'maKemXuatXu',title:'Mã kèm xuất xứ',scope:'item',label:'Nước xuất xứ',nth:3,width:13}
 ];
 const KNOWN_LABELS = new Set([...FIELDS.map(f=>f.label).filter(Boolean),'Ký hiệu và số hiệu','Số tờ khai đầu tiên','Số tờ khai tạm nhập tái xuất tương ứng','Ngày thay đổi đăng ký','Mã phân loại tái xác nhận giá','Mã phân loại kiểm tra','Mã số thuế đại diện','Mã bộ phận xử lý tờ khai','Tên','Mã','Thuế xuất khẩu','Trị giá tính thuế (S)','Trị giá tính thuế (M)','Số lượng tính thuế','Đơn giá tính thuế','Mã số hàng hóa đại diện của tờ khai','Số của mục khai khoản điều chỉnh','Thời hạn tái nhập/ tái xuất','Thuế nhập khẩu','Trị giá tính thuế(S)','Trị giá tính thuế(M)','Mã bưu chính','Địa chỉ']);
 function normalize(value){return String(value??'').normalize('NFC').trim().replace(/\s+/g,' ');}
@@ -115,9 +117,8 @@ function parseWorkbook(wb,fileName=''){
    const raw=found.cell?.v;
    // SheetJS formatted text preserves zero-padded numeric codes where present.
    const text=(f.key==='maHS'||f.key==='soTK')&&typeof raw==='number'?XLSX.utils.format_cell(found.cell):raw;
-   // Date fields keep day only; loại hình keeps only its code (e.g. "C11 1 [ 4 ]" → "C11").
-   const date=f.type==='date'?parseVNDate(raw):null;if(date)date.setHours(0,0,0,0);
-   target.values[f.key]=f.type==='number'?parseVNNumber(raw):f.type==='date'?date:f.key==='loaiHinh'?normalize(text).split(' ')[0]:normalize(text);
+   target.values[f.key]=f.key==='loaiHinh'?normalize(text).split(' ')[0]:f.type==='number'?parseVNNumber(raw):f.type==='date'?parseVNDate(raw):normalize(text);
+   if(f.key==='ngayDK'&&target.values[f.key] instanceof Date)target.values[f.key].setHours(0,0,0,0);
    target.src[f.key]=found.addr;
   }
  }
@@ -134,16 +135,41 @@ function parseWorkbook(wb,fileName=''){
  if(!rows.length)errors.push(`${fileName}: Không có dòng hàng (<NN> ở cột C).`);
  return {soTK,rows,errors};
 }
-const state={files:new Map(),rows:[],selected:new Set(),anchor:null,ranges:[],busy:false};
+// Columns merged like Thông tin: within one declaration, adjacent rows with the same non-empty value share a cell.
+// Header fields are equal across a declaration, so they merge over the whole group; item fields (HS, origin) only over equal runs.
+const MERGED_KEYS=new Set(['thongTin','soTK','ngayDK','loaiHinh','coQuanHQ','nguoiXK','luuKho','soKien','dvtKien','tongGross','dvtGross','maHS','maXuatXu','tenXuatXu','maKemXuatXu']);
+function mergeSpans(rows){
+ const spans={},same=(a,b)=>a instanceof Date&&b instanceof Date?+a===+b:a===b,empty=v=>v===null||v===undefined||String(v).trim()==='';
+ for(const key of MERGED_KEYS){
+  const list=spans[key]=[];
+  for(const g of informationGroups(rows))for(let start=g.start;start<=g.end;){
+   const v=rows[start].values[key];let end=start;
+   if(!empty(v))while(end<g.end&&same(rows[end+1].values[key],v))end++;
+   const span={start,end};for(let i=start;i<=end;i++)list[i]=span;start=end+1;
+  }
+ }
+ return spans;
+}
+// Merge only adjacent, identical, non-empty information; never reorder item rows.
+function informationGroups(rows){
+ const groups=[];
+ for(let start=0;start<rows.length;){
+  const value=rows[start].values.thongTin;let end=start;
+  if(typeof value==='string'&&value.trim())while(end+1<rows.length&&rows[end+1].values.thongTin===value)end++;
+  groups.push({start,end});start=end+1;
+ }
+ return groups;
+}
+const state={files:new Map(),rows:[],selected:new Set(),anchor:null,columnSelection:null,busy:false};
 const $=id=>document.getElementById(id);
 const escapeHTML=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const vnFormat=new Intl.NumberFormat('vi-VN',{maximumFractionDigits:20});
 function display(v){return v instanceof Date?dateText(v):typeof v==='number'?vnFormat.format(v):v??'';}
-function toTSV(rows,withHeader=false,fields=FIELDS,include=()=>true){
+function toTSV(rows,withHeader=false,fields=FIELDS){
  const decimal=(1.5).toLocaleString().charAt(1);
  // Excel reads quoted TSV fields with embedded newlines as a single multiline cell.
  const clean=v=>{const s=String(v??'').replace(/\r\n?/g,'\n');return /[\t\n"]/.test(s)?`"${s.replace(/"/g,'""')}"`:s;};
- const lines=rows.map(row=>fields.map(f=>{if(!include(row,f))return '';const v=row.values[f.key];return clean(v instanceof Date?dateText(v):typeof v==='number'?v.toLocaleString('en-US',{useGrouping:false,maximumFractionDigits:20}).replace('.',decimal):v);}).join('\t'));
+ const lines=rows.map(row=>fields.map(f=>{const v=row.values[f.key];return clean(v instanceof Date?dateText(v):typeof v==='number'?v.toLocaleString('en-US',{useGrouping:false,maximumFractionDigits:20}).replace('.',decimal):v);}).join('\t'));
  if(withHeader)lines.unshift(fields.map(f=>f.title).join('\t'));
  return lines.join('\r\n');
 }
@@ -159,42 +185,31 @@ function render(){
   if(xk)xkCounts.set(xk,(xkCounts.get(xk)||0)+1);
  });
  const dupKeys=new Set([...xkCounts.entries()].filter(([,c])=>c>1).map(([xk])=>xk));
+ const infoSpans=[];for(const group of informationGroups(state.rows))for(let i=group.start;i<=group.end;i++)infoSpans[i]=group;
+ state.spans=mergeSpans(state.rows);
  $('body').innerHTML=state.rows.map((row,i)=>{
   const xkKey=normalize(row.values.nguoiXK).toLowerCase();
   const isDup=!!xkKey&&dupKeys.has(xkKey);
   const trClass=[state.selected.has(row.id)?'selected':'',isDup?'duplicate':''].filter(Boolean).join(' ');
-  return `<tr class="${trClass}">${FIELDS.map(f=>{
+  const info=infoSpans[i];
+  return `<tr class="${trClass}" data-index="${i}" data-info-start="${info.start}" data-info-end="${info.end}">${FIELDS.map(f=>{
+   const sp=state.spans[f.key]?.[i];if(sp&&i!==sp.start)return '';
+   const span=sp?` rowspan="${sp.end-sp.start+1}" data-end="${sp.end}"`:'';
    const isNguoiXK=f.key==='nguoiXK';
    const title=isNguoiXK&&isDup?`Người xuất khẩu trùng (${xkCounts.get(xkKey)} dòng)${row.src[f.key]?`; nhấp đúp xem ô ${escapeHTML(row.src[f.key].addr)}`:''}`:`Kéo để chọn${row.src[f.key]?`; nhấp đúp xem ô ${escapeHTML(row.src[f.key].addr)}`:''}`;
-   return `<td data-index="${i}" data-col="${FIELDS.indexOf(f)}" data-key="${f.key}" tabindex="0" title="${title}">${escapeHTML(display(row.values[f.key]))}</td>`;
+   return `<td data-index="${i}" data-key="${f.key}"${span} tabindex="0" title="${title}">${escapeHTML(display(row.values[f.key]))}</td>`;
   }).join('')}</tr>`;
  }).join('');
  $('empty').hidden=!!state.rows.length;$('clear').disabled=!state.rows.length||state.busy;$('download').disabled=!state.rows.length||state.busy||!window.ExcelJS;
  updateSelection();
 }
-// Selection = list of rectangles {r0,c0,r1,c1} (row index, FIELDS index), like Excel's Ctrl multi-range.
-function inRanges(r,c){return state.ranges.some(g=>r>=Math.min(g.r0,g.r1)&&r<=Math.max(g.r0,g.r1)&&c>=Math.min(g.c0,g.c1)&&c<=Math.max(g.c0,g.c1));}
-// Copy block: every row and column touched by any range; cells outside the ranges stay blank.
-function selectionBlock(){
- if(!state.ranges.length)return null;
- const ri=new Set(),ci=new Set(),cells=new Set();
- for(let r=0;r<state.rows.length;r++)for(let c=0;c<FIELDS.length;c++)if(inRanges(r,c)){ri.add(r);ci.add(c);cells.add(r*FIELDS.length+c);}
- if(!cells.size)return null;
- const rowIdx=[...ri].sort((a,b)=>a-b),colIdx=[...ci].sort((a,b)=>a-b),pos=new Map(state.rows.map((row,i)=>[row,i]));
- return {count:cells.size,rows:rowIdx.map(i=>state.rows[i]),fields:colIdx.map(i=>FIELDS[i]),include:(row,f)=>cells.has(pos.get(row)*FIELDS.length+FIELDS.indexOf(f))};
-}
-function copyPayload(){
- const b=selectionBlock();
- if(b)return {rows:b.rows,fields:b.fields,include:b.include,label:`Đã copy ${b.count} ô`};
- const rows=state.rows.filter(r=>state.selected.has(r.id));
- return rows.length?{rows,fields:FIELDS,include:undefined,label:`Đã copy ${rows.length} dòng`}:null;
-}
 function updateSelection(){
- const b=selectionBlock(),count=b?b.count:state.selected.size;
- $('selectedCount').textContent=b?`${count} ô đã chọn`:`${count} dòng đã chọn`;$('copy').disabled=!count;
- document.querySelectorAll('#body td[data-key]').forEach(cell=>cell.classList.toggle('cell-selected',!!b&&inRanges(+cell.dataset.index,+cell.dataset.col)));
+ const selection=state.columnSelection;
+ const count=selection?Math.abs(selection.end-selection.start)+1:state.selected.size;
+ $('selectedCount').textContent=selection?`${count} ô · ${FIELDS.find(f=>f.key===selection.key).title}`:`${count} dòng đã chọn`;$('copy').disabled=!count;
+ document.querySelectorAll('#body td[data-key]').forEach(cell=>cell.classList.toggle('cell-selected',!!selection&&cell.dataset.key===selection.key&&+(cell.dataset.end??cell.dataset.index)>=Math.min(selection.start,selection.end)&&+cell.dataset.index<=Math.max(selection.start,selection.end)));
 }
-function removeFile(id){state.ranges=[];state.files.delete(id);state.rows=state.rows.filter(r=>{if(r.fileId===id){state.selected.delete(r.id);return false;}return true;});state.anchor=null;$('source').close();render();}
+function removeFile(id){state.columnSelection=null;state.files.delete(id);state.rows=state.rows.filter(r=>{if(r.fileId===id){state.selected.delete(r.id);return false;}return true;});state.anchor=null;$('source').close();render();}
 function confirmDuplicate(soTK){return new Promise(resolve=>{const dlg=$('duplicate');dlg.returnValue='no';$('duplicateText').textContent=`Tờ khai ${soTK} đã tồn tại. Ghi đè?`;dlg.addEventListener('close',()=>resolve(dlg.returnValue==='yes'),{once:true});dlg.showModal();});}
 let uploadQueue=Promise.resolve(),serial=0;
 function enqueue(files){const list=Array.from(files);uploadQueue=uploadQueue.then(()=>loadFiles(list)).catch(e=>showError(e.message));}
@@ -220,12 +235,14 @@ async function loadFiles(files){
 let toastTimer;
 function toast(message){$('toast').textContent=message;$('toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').hidden=true,3200);}
 async function copySelected(){
- const p=copyPayload();if(!p)return;
- const tsv=toTSV(p.rows,$('withHeader').checked,p.fields,p.include);
+ const selection=state.columnSelection;
+ const rows=selection?state.rows.slice(Math.min(selection.start,selection.end),Math.max(selection.start,selection.end)+1):state.rows.filter(r=>state.selected.has(r.id));if(!rows.length)return;
+ const fields=selection?FIELDS.filter(f=>f.key===selection.key):FIELDS;
+ const tsv=toTSV(rows,$('withHeader').checked,fields);
  try{
   if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(tsv);
   else{const area=document.createElement('textarea');area.value=tsv;area.style.cssText='position:fixed;left:-9999px';document.body.append(area);area.select();const ok=document.execCommand('copy');area.remove();$('tableWrap').focus();if(!ok)throw Error('Clipboard không khả dụng.');}
-  toast(p.label);
+  toast(selection?`Đã copy ${rows.length} ô cột ${fields[0].title}`:`Đã copy ${rows.length} dòng`);
  }catch(e){showError(`Không thể copy: ${e.message} Hãy cho phép quyền clipboard hoặc mở trang qua localhost/HTTPS.`);}
 }
 async function exportXlsx(rows){
@@ -243,6 +260,8 @@ async function exportXlsx(rows){
   if(r===1)cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFFFFF00'}};
   else{const f=FIELDS[c-1];cell.numFmt=f.type==='date'?'dd/mm/yyyy':f.format||(f.type==='number'?'General':'@');}
  }));ws.getRow(1).height=32;
+ const spans=mergeSpans(rows);
+ FIELDS.forEach((f,i)=>{for(const sp of new Set(spans[f.key]||[]))if(sp.end>sp.start)ws.mergeCells(sp.start+2,i+1,sp.end+2,i+1);});
  return wb.xlsx.writeBuffer();
 }
 async function download(){
@@ -277,7 +296,7 @@ async function selfTest(){
  const box=$('tests');box.hidden=false;const lines=[];let failed=0;
  const check=(name,ok)=>{lines.push(`${ok?'PASS':'FAIL'} · ${name}`);if(!ok)failed++;console[ok?'log':'error'](lines.at(-1));box.textContent=lines.join('\n');};
  for(const [input,expected] of [['209,5',209.5],['5.375.770',5375770],['20.849.776,4',20849776.4],['812,54',812.54],['',null],[309107944520,309107944520]])check(`parseVNNumber(${JSON.stringify(input)})`,parseVNNumber(input)===expected);
- check('Ngày chỉ lấy ngày/tháng/năm',dateText(parseVNDate('27/10/2026 15:33:45'))==='27/10/2026');
+ check('Ngày đăng ký không kèm giờ',dateText(parseVNDate('27/10/2026 15:33:45'))==='27/10/2026');
  check('Ngày không hợp lệ trả null',parseVNDate('31/02/2026 12:00:00')===null);
  check('Số không hợp lệ trả null',parseVNNumber('abc')===null);
  try{const response=await fetch('./tờ khai.xlsx');if(!response.ok)throw Error('Không tìm thấy file mẫu');const parsed=parseWorkbook(XLSX.read(await response.arrayBuffer(),{type:'array',cellDates:true}),'tờ khai.xlsx');sampleAssertions(parsed,check);}
@@ -290,13 +309,12 @@ $('choose').onclick=()=>$('upload').click();$('upload').onchange=e=>{enqueue(e.t
 $('drop').addEventListener('drop',e=>enqueue(e.dataTransfer.files));
 window.addEventListener('dragover',e=>e.preventDefault());window.addEventListener('drop',e=>e.preventDefault());
 $('fileList').onclick=e=>{const b=e.target.closest('[data-remove]');if(b&&!state.busy)removeFile(b.dataset.remove);};
-// extend: Shift moves the active range's end; add: Ctrl starts an extra range.
-function selectColumnCell(cell,extend=false,add=false){
- const r=+cell.dataset.index,c=+cell.dataset.col,last=state.ranges.at(-1);
- state.selected.clear();state.anchor=null;
- if(extend&&last){last.r1=r;last.c1=c;}
- else{const g={r0:r,c0:c,r1:r,c1:c};state.ranges=add?[...state.ranges,g]:[g];}
- updateSelection();
+function selectColumnCell(cell,extend=false){
+ const index=+cell.dataset.index,key=cell.dataset.key;
+ const previous=extend&&state.columnSelection?.key===key?state.columnSelection:null;
+ const anchorStart=previous?.anchorStart??previous?.start??index,anchorEnd=previous?.anchorEnd??previous?.start??+(cell.dataset.end??index);
+ const backward=index<anchorStart,start=backward?anchorEnd:anchorStart,end=backward?index:+(cell.dataset.end??index);
+ state.selected.clear();state.anchor=null;state.columnSelection={key,start,end,anchorStart,anchorEnd};updateSelection();
 }
 let dragSelection=null,dragFrame=0;
 function trackColumnDrag(){
@@ -305,14 +323,19 @@ function trackColumnDrag(){
  const {x,y}=dragSelection;
  if(y<top+24)wrap.scrollTop-=14;else if(y>rect.bottom-24)wrap.scrollTop+=14;
  const target=document.elementFromPoint(Math.max(rect.left+2,Math.min(x,rect.right-2)),Math.max(top+2,Math.min(y,rect.bottom-18)));
- if(x<rect.left+24)wrap.scrollLeft-=14;else if(x>rect.right-24)wrap.scrollLeft+=14;
- const cell=target?.closest('#body td[data-key]'),g=state.ranges.at(-1);
- if(cell&&g&&(g.r1!==+cell.dataset.index||g.c1!==+cell.dataset.col)){g.r1=+cell.dataset.index;g.c1=+cell.dataset.col;updateSelection();}
+ let row=target?.closest('#body tr');const selection=state.columnSelection;
+ if(target?.closest('td')?.rowSpan>1)row=[...$('body').rows].find(r=>{const bounds=r.getBoundingClientRect();return y>=bounds.top&&y<bounds.bottom;})||row;
+ if(row&&selection){
+  const sp=state.spans?.[selection.key]?.[+row.dataset.index],merged=!!sp,backward=merged&&sp.start<selection.anchorStart;
+  const start=merged?(backward?selection.anchorEnd:selection.anchorStart):selection.start;
+  const end=merged?(backward?sp.start:sp.end):+row.dataset.index;
+  if(selection.start!==start||selection.end!==end){selection.start=start;selection.end=end;updateSelection();}
+ }
  dragFrame=requestAnimationFrame(trackColumnDrag);
 }
 $('body').addEventListener('pointerdown',e=>{
  const cell=e.target.closest('[data-key]');if(!cell||e.button!==0)return;
- e.preventDefault();cell.focus({preventScroll:true});selectColumnCell(cell,e.shiftKey,e.ctrlKey||e.metaKey);
+ e.preventDefault();cell.focus({preventScroll:true});selectColumnCell(cell,e.shiftKey);
  dragSelection={x:e.clientX,y:e.clientY,pointerId:e.pointerId};cell.setPointerCapture(e.pointerId);
  cancelAnimationFrame(dragFrame);dragFrame=requestAnimationFrame(trackColumnDrag);
 });
@@ -322,23 +345,32 @@ document.addEventListener('pointerup',endColumnDrag);document.addEventListener('
 function showCellSource(cell){const src=state.rows[+cell.dataset.index]?.src[cell.dataset.key];if(src)openSource(src.fileId,src.sheet,src.addr);}
 $('body').ondblclick=e=>{const cell=e.target.closest('[data-key]');if(cell)showCellSource(cell);};
 $('tableWrap').addEventListener('copy',e=>{
- const p=copyPayload();if(!p||!e.clipboardData)return;
- e.preventDefault();e.clipboardData.setData('text/plain',toTSV(p.rows,$('withHeader').checked,p.fields,p.include));toast(p.label);
+ const s=state.columnSelection;
+ const rows=s?state.rows.slice(Math.min(s.start,s.end),Math.max(s.start,s.end)+1):state.rows.filter(r=>state.selected.has(r.id));
+ if(!rows.length||!e.clipboardData)return;
+ const fields=s?FIELDS.filter(f=>f.key===s.key):FIELDS;
+ e.preventDefault();e.clipboardData.setData('text/plain',toTSV(rows,$('withHeader').checked,fields));
+ toast(s?`Đã copy ${rows.length} ô cột ${fields[0].title}`:`Đã copy ${rows.length} dòng`);
 });
 $('tableWrap').onkeydown=e=>{
- if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='c'&&(state.selected.size||state.ranges.length)){e.preventDefault();copySelected();}
- else if(e.key==='Escape'){state.ranges=[];state.selected.clear();updateSelection();}
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='c'&&(state.selected.size||state.columnSelection)){e.preventDefault();copySelected();}
+ else if(e.key==='Escape'){state.columnSelection=null;state.selected.clear();updateSelection();}
  else if(e.target.matches('[data-key]')){
   if(e.key==='Enter'){e.preventDefault();showCellSource(e.target);}
   else if(e.key===' '){e.preventDefault();selectColumnCell(e.target,e.shiftKey);}
-  else if(e.shiftKey&&['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)){
-   e.preventDefault();if(!state.ranges.length)selectColumnCell(e.target);
-   const g=state.ranges.at(-1),dr={ArrowUp:-1,ArrowDown:1}[e.key]||0,dc={ArrowLeft:-1,ArrowRight:1}[e.key]||0;
-   g.r1=Math.max(0,Math.min(state.rows.length-1,g.r1+dr));g.c1=Math.max(0,Math.min(FIELDS.length-1,g.c1+dc));updateSelection();
+  else if(e.shiftKey&&['ArrowUp','ArrowDown'].includes(e.key)){
+   e.preventDefault();if(!state.columnSelection)selectColumnCell(e.target);
+   if(MERGED_KEYS.has(state.columnSelection.key)){
+    const list=state.spans[state.columnSelection.key],current=list[state.columnSelection.end];
+    const next=e.key==='ArrowDown'?current.end+1:current.start-1,group=list[next];
+    if(group)selectColumnCell($('body').querySelector(`td[data-key="${state.columnSelection.key}"][data-index="${group.start}"]`),true);
+    return;
+   }
+   const s=state.columnSelection;s.end=Math.max(0,Math.min(state.rows.length-1,s.end+(e.key==='ArrowDown'?1:-1)));updateSelection();
   }
  }
 };
-$('copy').onclick=copySelected;$('download').onclick=download;$('clear').onclick=()=>{state.files.clear();state.rows=[];state.selected.clear();state.anchor=null;state.ranges=[];$('source').close();$('errors').replaceChildren();$('status').textContent='Đã xóa tất cả tờ khai.';render();};$('closeSource').onclick=()=>$('source').close();
+$('copy').onclick=copySelected;$('download').onclick=download;$('clear').onclick=()=>{state.files.clear();state.rows=[];state.selected.clear();state.anchor=null;state.columnSelection=null;$('source').close();$('errors').replaceChildren();$('status').textContent='Đã xóa tất cả tờ khai.';render();};$('closeSource').onclick=()=>$('source').close();
 render();
 if(!window.XLSX)showError('Không tải được SheetJS. Cần kết nối mạng để tải thư viện CDN; hãy tải lại trang.');
 if(!window.ExcelJS)showError('Không tải được ExcelJS. Chức năng tải Output tạm thời không khả dụng.');
