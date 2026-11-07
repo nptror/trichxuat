@@ -119,10 +119,11 @@ function parseCbm(wb,opts={}){
  const ws=opts.sheet?wb.getWorksheet(opts.sheet):wb.getWorksheet(sheets[0]);if(!ws)throw new Error('File CBM không có sheet.');
  const read=addr=>{const [,col,row]=addr.match(/^([A-Z]+)(\d+)$/);return cellValue(ws.findRow(+row)?.findCell(colNumber(col)),true);};
  // Resolve input columns from headers, allowing inserted/reordered columns and title rows.
- const headerKey=value=>norm(value).toUpperCase().replace(/[._]/g,' ').replace(/\s+/g,' ').trim();
- const aliases={name:['DESCRIPTION','ARTICLE NAME','ITEM DESCRIPTION'],code:['CODE','ITEM CODE'],L:['L','LENGTH'],W:['W','WIDTH'],H:['H','HEIGHT'],sets:['SETS','SET','QTY','QUANTITY'],carton:['CARTON','CARTONS','PKGS','PACKAGES']};
+ const headerKey=value=>norm(value).toUpperCase().replace(/[._:]/g,' ').replace(/\s+/g,' ').trim();
+ const aliases={name:['DESCRIPTION','ARTICLE NAME','ITEM DESCRIPTION'],code:['CODE','ITEM CODE','PART'],L:['L','LENGTH'],W:['W','WIDTH'],H:['H','HEIGHT'],sets:['SETS','SET','QTY','QUANTITY','QTY PCS'],carton:['CARTON','CARTONS','PKGS','PACKAGES','NO OF CARTON','NO OF CARTONS'],po:['PO NO','PO']};
  const labelText=cell=>{const value=cell?.value;return typeof value==='string'?value:value?.richText?value.richText.map(p=>p.text).join(''):'';};
- const headers=new Map(),intro=[];let labelRow=null,totalCol=null;
+ const roleOf=cell=>{const key=headerKey(labelText(cell));return Object.keys(aliases).find(role=>aliases[role].includes(key))||(/^(?:CTN|CARTON) SIZE\b/.test(key)?'size':undefined);};
+ const headers=new Map(),intro=[];let labelRow=null,totalCol=null,flat=false;
  const rowCells=r=>{const cells=[];ws.findRow(r)?.eachCell(cell=>{if(!cell.isMerged||cell.master.address===cell.address)cells.push(cell);});return cells;};
  ws.eachRow(row=>{
   if(labelRow)return;
@@ -134,22 +135,38 @@ function parseCbm(wb,opts={}){
   if(labelRow)return;
   intro.push(...cells.map(cell=>({row:row.number,text:norm(labelText(cell))})));
   for(const cell of cells){
-   const key=headerKey(labelText(cell));
-   const role=Object.keys(aliases).find(role=>aliases[role].includes(key));
+   const role=roleOf(cell);
    if(role)headers.set(cell.col,{role,row:row.number});
   }
  });
- if(!labelRow)throw new Error(`Sheet ${ws.name}: không tìm thấy tiêu đề “TOTAL” với cột Sets/QTY.`);
+ if(!labelRow){
+  // Flat CBM of one container (no cont/TOTAL label row): headers are the first row with Description, Sets/QTY and Carton/PKGS; data starts below it.
+  for(let r=1;r<=ws.rowCount&&!labelRow;r++){
+   const found=rowCells(r).map(cell=>[cell.col,{role:roleOf(cell),row:r}]).filter(([,h])=>h.role);
+   if(!['name','sets','carton'].every(role=>found.some(([,h])=>h.role===role)))continue;
+   headers.clear();found.forEach(([c,h])=>headers.set(c,h));
+   labelRow=r;totalCol=found.find(([,h])=>h.role==='sets')[0];flat=true;
+  }
+ }
+ if(!labelRow)throw new Error(`Sheet ${ws.name}: không tìm thấy dòng tiêu đề có cột Description, Sets/QTY và Carton/PKGS.`);
+ const size=[...headers].filter(([,h])=>h.role==='size');
+ if(size.length===1&&![...headers.values()].some(h=>['L','W','H'].includes(h.role))){
+  // "CTN SIZE (WxDxH)" is one header merged over its three dimension columns, taken in order as L, W, H.
+  const [c,h]=size[0],row=ws.findRow(h.row),master=row.findCell(c).address;
+  if(![1,2].every(i=>row.findCell(c+i)?.master.address===master))throw new Error(`Sheet ${ws.name}: tiêu đề ${master} phải gộp đúng 3 cột kích thước.`);
+  ['L','W','H'].forEach((role,i)=>headers.set(c+i,{role,row:h.row}));
+ }
  const columns={};
  for(const role of ['name','code','L','W','H']){
   const matches=[...headers].filter(([,h])=>h.role===role);
   if(matches.length!==1)throw new Error(`Sheet ${ws.name}: ${matches.length?'có nhiều':'thiếu'} tiêu đề ${aliases[role][0]}; không xác định được cột dữ liệu.`);
   columns[role]=colName(matches[0][0]);
  }
+ const poCols=[...headers].filter(([,h])=>h.role==='po');if(poCols.length===1)columns.po=colName(poCols[0][0]);
  const conts=[],quantityHeaders=[...headers].filter(([,h])=>h.role==='sets'||h.role==='carton').sort((a,b)=>a[0]-b[0]);
  for(let i=0;i<quantityHeaders.length;i++){
   const [c,h]=quantityHeaders[i];if(h.role!=='sets')continue;
-  const label=String(cellValue(ws.findRow(labelRow)?.findCell(c),true)??'').trim();if(!label)continue;
+  const label=flat?(c===totalCol?'TOTAL':''):String(cellValue(ws.findRow(labelRow)?.findCell(c),true)??'').trim();if(!label)continue;
   const next=quantityHeaders[i+1];
   if(!next||next[1].role!=='carton')throw new Error(`Sheet ${ws.name}: thiếu cột Carton/PKGS cho “${label}”.`);
   const [name,second='']=label.split(/\r?\n/).map(s=>s.trim());
@@ -177,6 +194,8 @@ function parseCbm(wb,opts={}){
   if(rowCells(r).some(cell=>/^(?:FINAL\s+)?TOTAL\b/i.test(norm(labelText(cell))))){totalRow=r;break;}
   const heading=poHeading(r);
   if(heading){currentPo=heading.match(/\d+/)?.[0]??null;lastMain=null;if(!currentPo)throw new Error(`Không đọc được PO tại dòng ${r}.`);continue;}
+  // A PO column ("65793 Knoxville") overrides PO headings row by row.
+  const cellPo=columns.po&&String(read(`${columns.po}${r}`)??'').match(/\b\d{5}\b/)?.[0];if(cellPo)currentPo=cellPo;
   const rawName=read(`${columns.name}${r}`);
   // A second box can have no name, only its dimensions.
   if(blank(rawName)&&blank(read(`${columns.code}${r}`))&&blank(read(`${columns.L}${r}`)))continue;

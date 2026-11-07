@@ -6,9 +6,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Trích xuất tờ khai hải quan</title>
 <style>
-:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#202b29;background:#f4f6f5;font-size:14px;accent-color:#176b53}*{box-sizing:border-box}body{margin:0}button,input{font:inherit}button{border:1px solid #cbd5d1;border-radius:6px;background:white;padding:9px 14px;cursor:pointer;color:inherit}button:hover:not(:disabled){background:#edf4f0}button:disabled{opacity:.45;cursor:not-allowed}button.primary{background:#176b53;color:white;border-color:#176b53}button.primary:hover:not(:disabled){background:#11513f}button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid #2b9878;outline-offset:3px}header{background:white;border-bottom:1px solid #dce3df;padding:22px 30px;display:flex;align-items:center;justify-content:space-between;gap:20px}h1{font-size:23px;margin:0 0 5px;letter-spacing:-.6px}p{margin:0;color:#63716b;line-height:1.6}.privacy{font-size:12px;color:#176b53;background:#edf5f0;padding:8px 12px;border-radius:5px;white-space:nowrap}main{padding:24px 30px;max-width:1800px;margin:auto}.import{display:grid;grid-template-columns:minmax(280px,1fr) minmax(300px,1.5fr);gap:22px;margin-bottom:24px}.drop{border:1px dashed #9eafa7;background:#fff;border-radius:8px;padding:24px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:10px}.drop.drag{background:#e6f5ed;border-color:#176b53}.drop strong{font-size:17px}.drop small{color:#63716b}.files{background:#fff;border:1px solid #dce3df;border-radius:8px;padding:18px;min-width:0}.section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}h2{font-size:15px;margin:0}.count{font-size:12px;color:#63716b}.file-list{max-height:160px;overflow:auto}.file{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 0;border-top:1px solid #edf0ee}.file-name{overflow-wrap:anywhere;font-weight:600}.file small{color:#63716b;display:block;margin-top:4px}.file button{padding:5px 10px}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:16px 0 12px;flex-wrap:wrap}.actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.actions label{font-size:13px;display:flex;align-items:center;gap:5px}.hint{font-size:12px;margin:8px 0}.table-wrap{overflow:auto;max-height:62vh;background:white;border:1px solid #cbd5d1;border-radius:6px;min-height:220px}table{border-collapse:separate;border-spacing:0;table-layout:fixed;width:max-content;font-size:13px}#output th{background:#ffff00;position:sticky;top:0;z-index:2;height:46px}#output th,#output td{border-right:1px solid #d4d9d6;border-bottom:1px solid #d4d9d6;padding:11px 10px;text-align:center;vertical-align:middle;white-space:pre-wrap;overflow-wrap:anywhere}#output #output #output #output #output #output #output td[data-key]{cursor:pointer}#output td[data-key]:hover{background:#fff6ce;box-shadow:inset 0 0 0 1px #ccac38}#output tr.selected td{background:#e8f3ee}#output tr.duplicate td{background:#fff3cd}#output tr.duplicate:hover td{background:#ffeaa7}#output tr.duplicate td[data-key]:hover{background:#ffd56b;box-shadow:inset 0 0 0 1px #b27b10}#output tr.duplicate.selected td{background:#d5ece0}input[type=checkbox]{width:16px;height:16px;cursor:pointer}#empty{text-align:center;padding:64px 20px}#empty strong{display:block;margin-bottom:8px}#errors{color:#9a2828}#errors p{color:inherit;background:#fff0ee;border:1px solid #f0d1ca;padding:10px 14px;margin:8px 0;border-radius:5px}#status{min-height:22px;font-size:13px;color:#176b53}dialog{border:1px solid #cbd5d1;border-radius:10px;padding:24px;max-width:calc(100vw - 32px)}dialog::backdrop{background:#17272066}#duplicate{width:420px}#duplicate p{margin:16px 0 24px;color:#202b29}#source{width:min(1100px,94vw);height:90vh;margin:5vh 2vw 5vh auto;padding:0}#source header{padding:15px 20px}#sourceTitle{font-size:14px;overflow-wrap:anywhere}#sourceBody{height:calc(100% - 75px);overflow:auto;padding:24px;background:#f4f4f1;font-family:Consolas,monospace}#sourceBody table{width:1240px;min-width:1240px;table-layout:fixed;font-family:Consolas,monospace;background:white;font-size:12px}#sourceBody td{min-width:32px;padding:4px;border:1px solid #e5e5e0;max-width:650px;white-space:pre-wrap}#sourceBody .source-cell{outline:3px solid #dd3925;outline-offset:-2px;background:#ffce83!important;animation:pulse .55s ease-in-out 3}@keyframes pulse{50%{background:#ff9d49}}#toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#203c31;color:white;padding:12px 20px;border-radius:7px;z-index:20;box-shadow:0 5px 20px #142a2426}#tests{white-space:pre-wrap;background:#fff;padding:16px;border:1px solid #cad8cf;border-radius:6px;font:12px/1.7 Consolas,monospace;margin-bottom:20px}[hidden]{display:none!important}footer{font-size:12px;color:#748079;display:flex;justify-content:space-between;gap:12px;margin-top:12px}@media(max-width:700px){header{padding:20px;align-items:flex-start;flex-direction:column}main{padding:18px}.import{grid-template-columns:1fr;gap:14px}h1{font-size:21px}.privacy{white-space:normal}.table-wrap{max-height:65vh}#source{width:96vw;margin:3vh auto;height:94vh}footer{flex-direction:column}}@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#202b29;background:#f4f6f5;font-size:14px;accent-color:#176b53}*{box-sizing:border-box}body{margin:0}button,input{font:inherit}button{border:1px solid #cbd5d1;border-radius:6px;background:white;padding:9px 14px;cursor:pointer;color:inherit}button:hover:not(:disabled){background:#edf4f0}button:disabled{opacity:.45;cursor:not-allowed}button.primary{background:#176b53;color:white;border-color:#176b53}button.primary:hover:not(:disabled){background:#11513f}button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid #2b9878;outline-offset:3px}header{background:white;border-bottom:1px solid #dce3df;padding:22px 30px;display:flex;align-items:center;justify-content:space-between;gap:20px}h1{font-size:23px;margin:0 0 5px;letter-spacing:-.6px}p{margin:0;color:#63716b;line-height:1.6}.privacy{font-size:12px;color:#176b53;background:#edf5f0;padding:8px 12px;border-radius:5px;white-space:nowrap}main{padding:24px 30px;max-width:1800px;margin:auto}.import{display:grid;grid-template-columns:minmax(280px,1fr) minmax(300px,1.5fr);gap:22px;margin-bottom:24px}.drop{border:1px dashed #9eafa7;background:#fff;border-radius:8px;padding:24px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:10px}.drop.drag{background:#e6f5ed;border-color:#176b53}.drop strong{font-size:17px}.drop small{color:#63716b}.files{background:#fff;border:1px solid #dce3df;border-radius:8px;padding:18px;min-width:0}.section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}h2{font-size:15px;margin:0}.count{font-size:12px;color:#63716b}.file-list{max-height:160px;overflow:auto}.file{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 0;border-top:1px solid #edf0ee}.file-name{overflow-wrap:anywhere;font-weight:600}.file small{color:#63716b;display:block;margin-top:4px}.file button{padding:5px 10px}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:16px 0 12px;flex-wrap:wrap}.actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.actions label{font-size:13px;display:flex;align-items:center;gap:5px}.hint{font-size:12px;margin:8px 0}.table-wrap{overflow:auto;max-height:62vh;background:white;border:1px solid #cbd5d1;border-radius:6px;min-height:220px}table{border-collapse:separate;border-spacing:0;table-layout:fixed;width:max-content;font-size:13px}#output th{background:#ffff00;position:sticky;top:0;z-index:2;height:46px}#output th,#output td{border-right:1px solid #d4d9d6;border-bottom:1px solid #d4d9d6;padding:11px 10px;text-align:center;vertical-align:middle;white-space:pre-wrap;overflow-wrap:anywhere}#output #output #output #output #output #output #output td[data-key]{cursor:pointer}#output td[data-key]:hover{background:#fff6ce;box-shadow:inset 0 0 0 1px #ccac38}#output tr.duplicate td{background:#fff3cd}#output tr.duplicate:hover td{background:#ffeaa7}#output tr.duplicate td[data-key]:hover{background:#ffd56b;box-shadow:inset 0 0 0 1px #b27b10}input[type=checkbox]{width:16px;height:16px;cursor:pointer}#empty{text-align:center;padding:64px 20px}#empty strong{display:block;margin-bottom:8px}#errors{color:#9a2828}#errors p{color:inherit;background:#fff0ee;border:1px solid #f0d1ca;padding:10px 14px;margin:8px 0;border-radius:5px}#status{min-height:22px;font-size:13px;color:#176b53}dialog{border:1px solid #cbd5d1;border-radius:10px;padding:24px;max-width:calc(100vw - 32px)}dialog::backdrop{background:#17272066}#duplicate{width:420px}#duplicate p{margin:16px 0 24px;color:#202b29}#source{width:min(1100px,94vw);height:90vh;margin:5vh 2vw 5vh auto;padding:0}#source header{padding:15px 20px}#sourceTitle{font-size:14px;overflow-wrap:anywhere}#sourceBody{height:calc(100% - 75px);overflow:auto;padding:24px;background:#f4f4f1;font-family:Consolas,monospace}#sourceBody table{width:1240px;min-width:1240px;table-layout:fixed;font-family:Consolas,monospace;background:white;font-size:12px}#sourceBody td{min-width:32px;padding:4px;border:1px solid #e5e5e0;max-width:650px;white-space:pre-wrap}#sourceBody .source-cell{outline:3px solid #dd3925;outline-offset:-2px;background:#ffce83!important;animation:pulse .55s ease-in-out 3}@keyframes pulse{50%{background:#ff9d49}}#toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#203c31;color:white;padding:12px 20px;border-radius:7px;z-index:20;box-shadow:0 5px 20px #142a2426}#tests{white-space:pre-wrap;background:#fff;padding:16px;border:1px solid #cad8cf;border-radius:6px;font:12px/1.7 Consolas,monospace;margin-bottom:20px}[hidden]{display:none!important}footer{font-size:12px;color:#748079;display:flex;justify-content:space-between;gap:12px;margin-top:12px}@media(max-width:700px){header{padding:20px;align-items:flex-start;flex-direction:column}main{padding:18px}.import{grid-template-columns:1fr;gap:14px}h1{font-size:21px}.privacy{white-space:normal}.table-wrap{max-height:65vh}#source{width:96vw;margin:3vh auto;height:94vh}footer{flex-direction:column}}@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
 #output td[data-key]{cursor:cell;user-select:none;touch-action:pan-x}
-#output td[data-key].cell-selected,#output tr.selected td.cell-selected,#output tr.duplicate td.cell-selected{background:#d5eee3;box-shadow:inset 0 0 0 2px #176b53}
+#output td[data-key].cell-selected,#output tr.duplicate td.cell-selected{background:#d5eee3;box-shadow:inset 0 0 0 2px #176b53}
 .brand{display:flex;align-items:center;gap:14px;min-width:0}.brand-logo{display:block;width:64px;height:64px;object-fit:contain;flex-shrink:0}@media(max-width:700px){.brand-logo{width:48px;height:48px}.brand{gap:10px}}
 /* Large scrollbars for easy grabbing (Chromium/Edge/Safari). Firefox only supports thin/auto widths. */
 .table-wrap::-webkit-scrollbar{height:18px;width:14px}.table-wrap::-webkit-scrollbar-track{background:#eef2f0;border-radius:9px}.table-wrap::-webkit-scrollbar-thumb{background:#9fb3aa;border-radius:9px;border:3px solid #eef2f0}.table-wrap::-webkit-scrollbar-thumb:hover{background:#6f8c80}.table-wrap::-webkit-scrollbar-thumb:active{background:#176b53}.table-wrap::-webkit-scrollbar-corner{background:#eef2f0}
@@ -24,8 +24,8 @@
 </section>
 <div id="status" role="status"></div><div id="errors" role="alert"></div>
 <section aria-labelledby="outputTitle"><div class="toolbar"><div><h2 id="outputTitle">Sheet Output <span id="rowCount" class="count">· 0 dòng</span></h2></div><div class="actions"><span id="selectedCount" class="count">0 ô đã chọn</span><label><input id="withHeader" type="checkbox"> Kèm tiêu đề</label><button id="copy" disabled>Copy</button><button id="download" class="primary" disabled>Tải output.xlsx</button><button id="clear" disabled>Xóa tất cả</button></div></div>
-<p class="hint">Kéo chọn các ô trong một cột rồi Ctrl+C để copy · Shift + click để chọn dải · Nhấp đúp ô để xem nguồn · Checkbox để copy cả dòng · <span style="background:#fff3cd;padding:1px 6px;border-radius:4px;border:1px solid #ffe082;color:#7a5a00">Màu vàng: Trùng người xuất khẩu</span></p>
-<div id="tableWrap" class="table-wrap" tabindex="0" aria-label="Bảng Output. Ctrl+C để copy các dòng đã chọn."><table id="output"><thead><tr id="head"></tr></thead><tbody id="body"></tbody></table><div id="empty"><strong>Bảng Output đang trống</strong><p>Dữ liệu từ các tờ khai sẽ hiển thị ở đây, gồm các trường đã đánh dấu và cột thông tin tổng hợp.</p></div></div>
+<p class="hint">Kéo chuột để chọn nhiều dòng, nhiều cột rồi Ctrl+C để copy · Shift + click hoặc Shift + phím mũi tên để mở rộng vùng chọn · Nhấp đúp ô để xem nguồn ·<span style="background:#fff3cd;padding:1px 6px;border-radius:4px;border:1px solid #ffe082;color:#7a5a00">Màu vàng: Trùng người xuất khẩu</span></p>
+<div id="tableWrap" class="table-wrap" tabindex="0" aria-label="Bảng Output. Ctrl+C để copy các ô đã chọn."><table id="output"><thead><tr id="head"></tr></thead><tbody id="body"></tbody></table><div id="empty"><strong>Bảng Output đang trống</strong><p>Dữ liệu từ các tờ khai sẽ hiển thị ở đây, gồm các trường đã đánh dấu và cột thông tin tổng hợp.</p></div></div>
 <footer><span>Số và ngày theo định dạng Việt Nam. Số kiện và Tổng Gross là số chung của tờ khai, lặp lại ở mỗi dòng hàng.</span><span>Dữ liệu chỉ giữ trong phiên hiện tại.</span></footer></section>
 </main>
 <dialog id="duplicate" aria-labelledby="duplicateTitle"><h2 id="duplicateTitle">Tờ khai trùng</h2><p id="duplicateText"></p><form method="dialog" class="actions"><button value="no" autofocus>Không</button><button value="yes" class="primary">Có, ghi đè</button></form></dialog>
@@ -160,7 +160,21 @@ function informationGroups(rows){
  }
  return groups;
 }
-const state={files:new Map(),rows:[],selected:new Set(),anchor:null,columnSelection:null,busy:false};
+// Selection is an anchor and a focus cell ({row,col}); like Excel, the rectangle between them grows until it cuts no merged cell.
+function selectionRect({anchor,focus},spans){
+ let top=Math.min(anchor.row,focus.row),bottom=Math.max(anchor.row,focus.row);
+ const left=Math.min(anchor.col,focus.col),right=Math.max(anchor.col,focus.col);
+ for(let grown=true;grown;){
+  grown=false;
+  for(let c=left;c<=right;c++){
+   const list=spans[FIELDS[c].key];if(!list)continue;
+   if(list[top].start<top){top=list[top].start;grown=true;}
+   if(list[bottom].end>bottom){bottom=list[bottom].end;grown=true;}
+  }
+ }
+ return {top,bottom,left,right};
+}
+const state={files:new Map(),rows:[],selection:null,busy:false};
 const $=id=>document.getElementById(id);
 const escapeHTML=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const vnFormat=new Intl.NumberFormat('vi-VN',{maximumFractionDigits:20});
@@ -190,26 +204,24 @@ function render(){
  $('body').innerHTML=state.rows.map((row,i)=>{
   const xkKey=normalize(row.values.nguoiXK).toLowerCase();
   const isDup=!!xkKey&&dupKeys.has(xkKey);
-  const trClass=[state.selected.has(row.id)?'selected':'',isDup?'duplicate':''].filter(Boolean).join(' ');
   const info=infoSpans[i];
-  return `<tr class="${trClass}" data-index="${i}" data-info-start="${info.start}" data-info-end="${info.end}">${FIELDS.map(f=>{
+  return `<tr class="${isDup?'duplicate':''}" data-index="${i}" data-info-start="${info.start}" data-info-end="${info.end}">${FIELDS.map((f,c)=>{
    const sp=state.spans[f.key]?.[i];if(sp&&i!==sp.start)return '';
    const span=sp?` rowspan="${sp.end-sp.start+1}" data-end="${sp.end}"`:'';
    const isNguoiXK=f.key==='nguoiXK';
    const title=isNguoiXK&&isDup?`Người xuất khẩu trùng (${xkCounts.get(xkKey)} dòng)${row.src[f.key]?`; nhấp đúp xem ô ${escapeHTML(row.src[f.key].addr)}`:''}`:`Kéo để chọn${row.src[f.key]?`; nhấp đúp xem ô ${escapeHTML(row.src[f.key].addr)}`:''}`;
-   return `<td data-index="${i}" data-key="${f.key}"${span} tabindex="0" title="${title}">${escapeHTML(display(row.values[f.key]))}</td>`;
+   return `<td data-index="${i}" data-col="${c}" data-key="${f.key}"${span} tabindex="0" title="${title}">${escapeHTML(display(row.values[f.key]))}</td>`;
   }).join('')}</tr>`;
  }).join('');
  $('empty').hidden=!!state.rows.length;$('clear').disabled=!state.rows.length||state.busy;$('download').disabled=!state.rows.length||state.busy||!window.ExcelJS;
  updateSelection();
 }
 function updateSelection(){
- const selection=state.columnSelection;
- const count=selection?Math.abs(selection.end-selection.start)+1:state.selected.size;
- $('selectedCount').textContent=selection?`${count} ô · ${FIELDS.find(f=>f.key===selection.key).title}`:`${count} dòng đã chọn`;$('copy').disabled=!count;
- document.querySelectorAll('#body td[data-key]').forEach(cell=>cell.classList.toggle('cell-selected',!!selection&&cell.dataset.key===selection.key&&+(cell.dataset.end??cell.dataset.index)>=Math.min(selection.start,selection.end)&&+cell.dataset.index<=Math.max(selection.start,selection.end)));
+ const r=state.selection&&selectionRect(state.selection,state.spans),rows=r?r.bottom-r.top+1:0,cols=r?r.right-r.left+1:0;
+ $('selectedCount').textContent=!r?'0 ô đã chọn':cols>1?`${rows} dòng × ${cols} cột`:`${rows} ô · ${FIELDS[r.left].title}`;$('copy').disabled=!r;
+ document.querySelectorAll('#body td[data-key]').forEach(cell=>cell.classList.toggle('cell-selected',!!r&&+cell.dataset.col>=r.left&&+cell.dataset.col<=r.right&&+(cell.dataset.end??cell.dataset.index)>=r.top&&+cell.dataset.index<=r.bottom));
 }
-function removeFile(id){state.columnSelection=null;state.files.delete(id);state.rows=state.rows.filter(r=>{if(r.fileId===id){state.selected.delete(r.id);return false;}return true;});state.anchor=null;$('source').close();render();}
+function removeFile(id){state.selection=null;state.files.delete(id);state.rows=state.rows.filter(r=>r.fileId!==id);$('source').close();render();}
 function confirmDuplicate(soTK){return new Promise(resolve=>{const dlg=$('duplicate');dlg.returnValue='no';$('duplicateText').textContent=`Tờ khai ${soTK} đã tồn tại. Ghi đè?`;dlg.addEventListener('close',()=>resolve(dlg.returnValue==='yes'),{once:true});dlg.showModal();});}
 let uploadQueue=Promise.resolve(),serial=0;
 function enqueue(files){const list=Array.from(files);uploadQueue=uploadQueue.then(()=>loadFiles(list)).catch(e=>showError(e.message));}
@@ -234,15 +246,17 @@ async function loadFiles(files){
 }
 let toastTimer;
 function toast(message){$('toast').textContent=message;$('toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').hidden=true,3200);}
+function selectionCopy(){
+ if(!state.selection)return null;
+ const r=selectionRect(state.selection,state.spans),rows=state.rows.slice(r.top,r.bottom+1),fields=FIELDS.slice(r.left,r.right+1);
+ return {tsv:toTSV(rows,$('withHeader').checked,fields),message:fields.length>1?`Đã copy ${rows.length} dòng × ${fields.length} cột`:`Đã copy ${rows.length} ô cột ${fields[0].title}`};
+}
 async function copySelected(){
- const selection=state.columnSelection;
- const rows=selection?state.rows.slice(Math.min(selection.start,selection.end),Math.max(selection.start,selection.end)+1):state.rows.filter(r=>state.selected.has(r.id));if(!rows.length)return;
- const fields=selection?FIELDS.filter(f=>f.key===selection.key):FIELDS;
- const tsv=toTSV(rows,$('withHeader').checked,fields);
+ const copy=selectionCopy();if(!copy)return;
  try{
-  if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(tsv);
-  else{const area=document.createElement('textarea');area.value=tsv;area.style.cssText='position:fixed;left:-9999px';document.body.append(area);area.select();const ok=document.execCommand('copy');area.remove();$('tableWrap').focus();if(!ok)throw Error('Clipboard không khả dụng.');}
-  toast(selection?`Đã copy ${rows.length} ô cột ${fields[0].title}`:`Đã copy ${rows.length} dòng`);
+  if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(copy.tsv);
+  else{const area=document.createElement('textarea');area.value=copy.tsv;area.style.cssText='position:fixed;left:-9999px';document.body.append(area);area.select();const ok=document.execCommand('copy');area.remove();$('tableWrap').focus();if(!ok)throw Error('Clipboard không khả dụng.');}
+  toast(copy.message);
  }catch(e){showError(`Không thể copy: ${e.message} Hãy cho phép quyền clipboard hoặc mở trang qua localhost/HTTPS.`);}
 }
 async function exportXlsx(rows){
@@ -299,6 +313,12 @@ async function selfTest(){
  check('Ngày đăng ký không kèm giờ',dateText(parseVNDate('27/10/2026 15:33:45'))==='27/10/2026');
  check('Ngày không hợp lệ trả null',parseVNDate('31/02/2026 12:00:00')===null);
  check('Số không hợp lệ trả null',parseVNNumber('abc')===null);
+ // Mã HS merges rows 1-2 and xuất xứ rows 2-3, so selecting row 2 must grow in a chain to rows 0-4.
+ const sel=[['x','VN'],['y','VN'],['y','CN'],['z','CN'],['z','US']].map(([maHS,maXuatXu],i)=>({values:{thongTin:'A',maHS,maXuatXu,moTa:'Item '+i,sl1:i+1}}));
+ const col=key=>FIELDS.findIndex(f=>f.key===key),rect=(anchor,focus)=>Object.values(selectionRect({anchor,focus},mergeSpans(sel))).join();
+ check('Chọn vùng nhiều dòng, nhiều cột',rect({row:1,col:col('moTa')},{row:3,col:col('sl1')})===[1,3,col('moTa'),col('sl1')].join());
+ check('Vùng chọn nới theo ô gộp',rect({row:2,col:col('maHS')},{row:2,col:col('maXuatXu')})===[0,4,col('maHS'),col('maXuatXu')].join());
+ check('Copy vùng nhiều cột',toTSV(sel.slice(1,4),false,FIELDS.slice(col('moTa'),col('sl1')+1))==='Item 1\t2\r\nItem 2\t3\r\nItem 3\t4');
  try{const response=await fetch('./tờ khai.xlsx');if(!response.ok)throw Error('Không tìm thấy file mẫu');const parsed=parseWorkbook(XLSX.read(await response.arrayBuffer(),{type:'array',cellDates:true}),'tờ khai.xlsx');sampleAssertions(parsed,check);}
  catch(e){lines.push(`CHƯA CHẠY mẫu: ${e.message}. Nếu mở bằng file://, hãy chọn tờ khai.xlsx bên dưới để kiểm tra.`);}
  lines.push(`Hoàn tất: ${failed} kiểm tra thất bại.`);box.textContent=lines.join('\n');
@@ -309,68 +329,67 @@ $('choose').onclick=()=>$('upload').click();$('upload').onchange=e=>{enqueue(e.t
 $('drop').addEventListener('drop',e=>enqueue(e.dataTransfer.files));
 window.addEventListener('dragover',e=>e.preventDefault());window.addEventListener('drop',e=>e.preventDefault());
 $('fileList').onclick=e=>{const b=e.target.closest('[data-remove]');if(b&&!state.busy)removeFile(b.dataset.remove);};
-function selectColumnCell(cell,extend=false){
- const index=+cell.dataset.index,key=cell.dataset.key;
- const previous=extend&&state.columnSelection?.key===key?state.columnSelection:null;
- const anchorStart=previous?.anchorStart??previous?.start??index,anchorEnd=previous?.anchorEnd??previous?.start??+(cell.dataset.end??index);
- const backward=index<anchorStart,start=backward?anchorEnd:anchorStart,end=backward?index:+(cell.dataset.end??index);
- state.selected.clear();state.anchor=null;state.columnSelection={key,start,end,anchorStart,anchorEnd};updateSelection();
+const cellPos=cell=>({row:+cell.dataset.index,col:+cell.dataset.col});
+function selectCell(cell,extend=false){
+ const pos=cellPos(cell);
+ state.selection={anchor:extend&&state.selection?state.selection.anchor:pos,focus:pos};updateSelection();
+}
+// Shift+arrow moves the focus corner; keep stepping while merged cells swallow the move, so every key press changes the selection.
+function extendSelection(dRow,dCol){
+ const s=state.selection,before=JSON.stringify(selectionRect(s,state.spans));
+ let {row,col}=s.focus;
+ for(;;){
+  const span=state.spans[FIELDS[col].key]?.[row]??{start:row,end:row};
+  row=dRow>0?span.end+1:dRow<0?span.start-1:row;col+=dCol;
+  if(row<0||row>=state.rows.length||col<0||col>=FIELDS.length)break;
+  s.focus={row,col};
+  if(JSON.stringify(selectionRect(s,state.spans))!==before)break;
+ }
+ updateSelection();
 }
 let dragSelection=null,dragFrame=0;
-function trackColumnDrag(){
+function trackDrag(){
  if(!dragSelection)return;
  const wrap=$('tableWrap'),rect=wrap.getBoundingClientRect(),top=rect.top+$('head').getBoundingClientRect().height;
  const {x,y}=dragSelection;
  if(y<top+24)wrap.scrollTop-=14;else if(y>rect.bottom-24)wrap.scrollTop+=14;
- const target=document.elementFromPoint(Math.max(rect.left+2,Math.min(x,rect.right-2)),Math.max(top+2,Math.min(y,rect.bottom-18)));
- let row=target?.closest('#body tr');const selection=state.columnSelection;
- if(target?.closest('td')?.rowSpan>1)row=[...$('body').rows].find(r=>{const bounds=r.getBoundingClientRect();return y>=bounds.top&&y<bounds.bottom;})||row;
- if(row&&selection){
-  const sp=state.spans?.[selection.key]?.[+row.dataset.index],merged=!!sp,backward=merged&&sp.start<selection.anchorStart;
-  const start=merged?(backward?selection.anchorEnd:selection.anchorStart):selection.start;
-  const end=merged?(backward?sp.start:sp.end):+row.dataset.index;
-  if(selection.start!==start||selection.end!==end){selection.start=start;selection.end=end;updateSelection();}
+ if(x<rect.left+24)wrap.scrollLeft-=14;else if(x>rect.right-24)wrap.scrollLeft+=14;
+ const px=Math.max(rect.left+2,Math.min(x,rect.right-16)),py=Math.max(top+2,Math.min(y,rect.bottom-18));
+ const cell=document.elementFromPoint(px,py)?.closest('#body td[data-key]');
+ if(cell&&state.selection){
+  const focus=cellPos(cell),old=state.selection.focus;
+  // A merged cell covers several rows: use the row under the pointer, not the merge's first row.
+  if(cell.rowSpan>1)focus.row=+([...$('body').rows].find(r=>{const b=r.getBoundingClientRect();return py>=b.top&&py<b.bottom;})?.dataset.index??focus.row);
+  if(old.row!==focus.row||old.col!==focus.col){state.selection.focus=focus;updateSelection();}
  }
- dragFrame=requestAnimationFrame(trackColumnDrag);
+ dragFrame=requestAnimationFrame(trackDrag);
 }
 $('body').addEventListener('pointerdown',e=>{
  const cell=e.target.closest('[data-key]');if(!cell||e.button!==0)return;
- e.preventDefault();cell.focus({preventScroll:true});selectColumnCell(cell,e.shiftKey);
+ e.preventDefault();cell.focus({preventScroll:true});selectCell(cell,e.shiftKey);
  dragSelection={x:e.clientX,y:e.clientY,pointerId:e.pointerId};cell.setPointerCapture(e.pointerId);
- cancelAnimationFrame(dragFrame);dragFrame=requestAnimationFrame(trackColumnDrag);
+ cancelAnimationFrame(dragFrame);dragFrame=requestAnimationFrame(trackDrag);
 });
 document.addEventListener('pointermove',e=>{if(dragSelection&&e.pointerId===dragSelection.pointerId){dragSelection.x=e.clientX;dragSelection.y=e.clientY;}});
-function endColumnDrag(){dragSelection=null;cancelAnimationFrame(dragFrame);}
-document.addEventListener('pointerup',endColumnDrag);document.addEventListener('pointercancel',endColumnDrag);window.addEventListener('blur',endColumnDrag);
+function endDrag(){dragSelection=null;cancelAnimationFrame(dragFrame);}
+document.addEventListener('pointerup',endDrag);document.addEventListener('pointercancel',endDrag);window.addEventListener('blur',endDrag);
 function showCellSource(cell){const src=state.rows[+cell.dataset.index]?.src[cell.dataset.key];if(src)openSource(src.fileId,src.sheet,src.addr);}
 $('body').ondblclick=e=>{const cell=e.target.closest('[data-key]');if(cell)showCellSource(cell);};
 $('tableWrap').addEventListener('copy',e=>{
- const s=state.columnSelection;
- const rows=s?state.rows.slice(Math.min(s.start,s.end),Math.max(s.start,s.end)+1):state.rows.filter(r=>state.selected.has(r.id));
- if(!rows.length||!e.clipboardData)return;
- const fields=s?FIELDS.filter(f=>f.key===s.key):FIELDS;
- e.preventDefault();e.clipboardData.setData('text/plain',toTSV(rows,$('withHeader').checked,fields));
- toast(s?`Đã copy ${rows.length} ô cột ${fields[0].title}`:`Đã copy ${rows.length} dòng`);
+ const copy=selectionCopy();if(!copy||!e.clipboardData)return;
+ e.preventDefault();e.clipboardData.setData('text/plain',copy.tsv);toast(copy.message);
 });
+const ARROWS={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]};
 $('tableWrap').onkeydown=e=>{
- if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='c'&&(state.selected.size||state.columnSelection)){e.preventDefault();copySelected();}
- else if(e.key==='Escape'){state.columnSelection=null;state.selected.clear();updateSelection();}
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='c'&&state.selection){e.preventDefault();copySelected();}
+ else if(e.key==='Escape'){state.selection=null;updateSelection();}
  else if(e.target.matches('[data-key]')){
   if(e.key==='Enter'){e.preventDefault();showCellSource(e.target);}
-  else if(e.key===' '){e.preventDefault();selectColumnCell(e.target,e.shiftKey);}
-  else if(e.shiftKey&&['ArrowUp','ArrowDown'].includes(e.key)){
-   e.preventDefault();if(!state.columnSelection)selectColumnCell(e.target);
-   if(MERGED_KEYS.has(state.columnSelection.key)){
-    const list=state.spans[state.columnSelection.key],current=list[state.columnSelection.end];
-    const next=e.key==='ArrowDown'?current.end+1:current.start-1,group=list[next];
-    if(group)selectColumnCell($('body').querySelector(`td[data-key="${state.columnSelection.key}"][data-index="${group.start}"]`),true);
-    return;
-   }
-   const s=state.columnSelection;s.end=Math.max(0,Math.min(state.rows.length-1,s.end+(e.key==='ArrowDown'?1:-1)));updateSelection();
-  }
+  else if(e.key===' '){e.preventDefault();selectCell(e.target,e.shiftKey);}
+  else if(e.shiftKey&&ARROWS[e.key]){e.preventDefault();if(!state.selection)selectCell(e.target);extendSelection(...ARROWS[e.key]);}
  }
 };
-$('copy').onclick=copySelected;$('download').onclick=download;$('clear').onclick=()=>{state.files.clear();state.rows=[];state.selected.clear();state.anchor=null;state.columnSelection=null;$('source').close();$('errors').replaceChildren();$('status').textContent='Đã xóa tất cả tờ khai.';render();};$('closeSource').onclick=()=>$('source').close();
+$('copy').onclick=copySelected;$('download').onclick=download;$('clear').onclick=()=>{state.files.clear();state.rows=[];state.selection=null;$('source').close();$('errors').replaceChildren();$('status').textContent='Đã xóa tất cả tờ khai.';render();};$('closeSource').onclick=()=>$('source').close();
 render();
 if(!window.XLSX)showError('Không tải được SheetJS. Cần kết nối mạng để tải thư viện CDN; hãy tải lại trang.');
 if(!window.ExcelJS)showError('Không tải được ExcelJS. Chức năng tải Output tạm thời không khả dụng.');
